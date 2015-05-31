@@ -1,6 +1,6 @@
 ﻿Title: [HOW-TO] Make a website with GitHub Pages and Pelican
 Date: 2015-5-18 
-Tags: how-to
+Tags: how-to, web-dev
 
 ---
 This article is intended for audience who has some knowledge on GitHub Pages and
