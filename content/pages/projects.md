@@ -1,14 +1,14 @@
 Title: projects
 
 ---
-# Getting Pomodoros Done
+# [Getting Pomodoros Done](https://github.com/don-han/GPD)
 
 
 
 ---
 
 
-# Debater's Chat Room
+# [Debater's Chat Room](https://github.com/YSAD/debate_chat_room)
 ---
 
 
