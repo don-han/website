@@ -1,0 +1,56 @@
+﻿Title: [IPE] What is P vs. NP?
+Date: 2015-5-30 
+Tags: in-plain-english
+
+NOTE: The following article is intended for those who have a minimal understanding
+of the subject, so I have intentionally left out some information that I considered
+is out of scope. However, if you are familiar with the subject, and if you think
+I presented *factually wrong* statements, I will greatly appreciate an email
+with correction. Also, if you are not familiar with the subject and are confused
+with my article, feel free to send me an email on where you got confused.
+
+I expect you to know: 
+- Polynomial time (algorithm runs fast)
+
+---
+
+In order to understand P vs. NP problem, we must understand P and NP first. P
+and NP arose from the necessity of matheticians and computer scientists to
+describe how much resources, such as memory or time, a decision problem takes to
+be solved. This is a significant task since if some problems are
+inherently difficult to solve and take unreasonable amount of resources, there
+is no point for talented researchers to look for a better algorithm for those
+problems since there will be none by definition. 
+   
+Formally, NP stands for "nondeterministic polynomial time" and although P does
+not have an official abbreviation, it describes a class of problems that can be
+solved *and* verified in polynomial time, so it is commonly referred to as the
+"polynomial" class. Meanwhile, NP problems are any decision problems that can be
+verified in polynomial time. It is important to note that NP does *not* stand for *not P*. Rather, all P problems automatically qualify as NP problems since all P
+problems satisfies polynomial-time verification *as well as* polynomial-time
+solution. Therefore, P and NP are not mutually exclusive.
+
+Now we can tackle P vs. NP problem, which is currently unsolved. The question
+simiply asks if P = NP or not. Although the question is simple, the implication
+is significant. If P = NP, then this implies that all problems that can be
+verified in polynomial time can also be solved in polynomial time as well. The
+magnitude of impact if P=NP is proven true extends beyond academic world.
+Although the specific details of implementation is beyond the scope of this
+article, many of the current algorithms including cryptography are implemented
+under the assumption of P != NP. For example, RSA which are widely used in
+secured data transmission exploits P!=NP by allowing polynomial encryption and
+non-polynomial decryption from public key. If P = NP, then this implies that
+there exists an algorithm that can decrypt any encrypted information from public
+key, and therefore the entire system can be broken. 
+
+If P != NP, however,although the impact is not as significant since most of the
+academics and industry already assume P != NP, this implies we would no longer
+have to waste our time trying to find faster algorithm for problems in NP since
+there is no polynomial-time solution.
+
+---
+
+To be more technical, NP stands for "non-deterministic polynomial" while P
+means "deterministic polynomial." If a problem is non-deterministic polynomial,
+the problem can be solved in polynomial with lucky guesses.For a P problem, the
+solution can be found in polynomial time without depending on luck.
