@@ -10,9 +10,6 @@ with corrections. Also, if you are confused with my explanation, please feel fre
 send me an email with details of where you are confused, so I can make it a bit
 more clear. 
 
-I expect you to know: 
-- Polynomial time (basically meaning an algorithm runs fast)
-
 ---
 
 # What exactly are P and NP? Why do we need them?
@@ -31,8 +28,10 @@ example above, our verification algorithm may sum up the cost of edges in linear
 compare it with the budget cost while the search algorithms such as DFS/BFS
 obtain the path in linear time as wel. On the other hand, NP problems are
 a set of decision problems which can be verified in polynomial time, but *not
-necessarily* solved in polynomial time. Although a common misunderstanding is to
-conceptualize NP as "*not* P", such notion is seriously misleading. Note that NP
+necessarily* solved in polynomial time. 
+
+Although a common misunderstanding is to
+conceptualize NP as "*not* P", such notion is greatly misleading. Note that NP
 problems may or may not be solved in polynomial time. Therefore, NP and P are
 not mutually exclusive classes. Rather, P is a subset of NP; all P problems
 automatically qualify as NP problems since all P problems satisfy
