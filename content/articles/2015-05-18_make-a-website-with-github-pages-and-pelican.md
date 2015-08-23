@@ -40,7 +40,7 @@ follow the `username.github.io` format (my repo is named `website`).
 your site with `pelican content`. By default, this will create your website
 structure on 'output' folder.
 
-5. Install ghp-import and do `ghp-import output`. To quote the creator, it is "a
+5. Install ghp-import (`pip install ghp-import`) and do `ghp-import output`. To quote the creator, it is "a
 script that can copy a directory to the gh-pages branch of the repository." More information about
 ghp-import [here](https://github.com/davisp/ghp-import). 
 

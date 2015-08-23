@@ -6,7 +6,7 @@ AUTHOR = u'Don Han'
 SITENAME = u'Don Han'
 SITEURL = ''
 
-TIMEZONE = 'Europe/Paris'
+TIMEZONE = 'US/Pacific'
 
 DEFAULT_LANG = u'en'
 
