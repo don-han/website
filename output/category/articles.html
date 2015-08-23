@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Don Han - articles</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Don Han </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">about</a></li>
+                    <li><a href="/pages/projects.html">projects</a></li>
+                    <li class="active"><a href="/category/articles.html">articles</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/intro-to-p-vs-np.html">[intro-to] P vs. NP</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-05-30T00:00:00-07:00">
+                Published: Sat 30 May 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/don-han.html">Don Han</a>
+        </address>
+<p>In <a href="/category/articles.html">articles</a>.</p>
+<p>tags: <a href="/tag/intro-to.html">intro-to</a> <a href="/tag/theory-of-computer-science.html">theory-of-computer-science</a> </p>
+</footer><!-- /.post-info --><p>NOTE: The following article is intended as a gentle introduction
+for the subject, so I have intentionally left out some information that I considered
+is out of scope. However, if you are familiar with the subject and if you think
+I presented <em>factually wrong</em> statements, I will greatly appreciate an email
+with corrections. Also, if you are confused with my explanation, please feel free to
+send me an email with details of where you are confused, so I can make it a bit
+more clear. </p>
+<hr />
+<h1>What exactly are P and NP? Why do we need them?</h1>
+<p>In order to understand the P vs. NP problem, we must understand P and NP first. P
+and NP rose from the necessity of matheticians and computer scientists to
+describe how much resources, such as time, are needed to solve a decision
+problem. A decision problem is defined as any problem that given an input can
+determine or <em>decide</em> with "yes" or "no" answer. For example, given a path and a
+budget cost as inputs, the decision problem might output "yes" if the path cost
+is equal to or lower than the budget cost. Likewise, the decision problem might output "no" if the path cost is higher than the budget cost. </p>
+<p>To be more precise, P problems are a set of decision problems that can be solved in polynomial
+time <em>and</em> verified in polynomial time. For the decision problem used as an
+example above, our verification algorithm may sum up the cost of edges in linear time ( O(n) ) to
+compare it with the budget cost while the search algorithms such as DFS/BFS
+obtain the path in linear time as wel. On the other hand, NP problems are
+a set of decision problems which can be verified in polynomial time, but <em>not
+necessarily</em> solved in polynomial time. </p>
+<p>Although a common misunderstanding is to
+conceptualize NP as "<em>not</em> P", such notion is greatly misleading. Note that NP
+problems may or may not be solved in polynomial time. Therefore, NP and P are
+not mutually exclusive classes. Rather, P is a subset of NP; all P problems
+automatically qualify as NP problems since all P problems satisfy
+polynomial-time verification <em>as well as</em> polynomial-time solution, and since NP
+problems only need to fulfill polynomial-time verification, all P problems are NP problems as well.</p>
+<p>For more technical details between P and NP, refer to the extra note.</p>
+<h1>P versus NP</h1>
+<p>Now we can tackle P vs. NP problem. The question simiply asks if P equals to NP
+or not. In other words, the problem asks, if a
+problem can be verified in a polynomial time, can the problem be solved in
+a polynomial time <em>all the time</em>? That is, are some NP problems inherently
+difficult or even impossible to solve in polynomial time, or have we just
+not found the fast algorithms <em>yet</em>? So far, no official proof has been
+recognized by the Clay Mathematics Institute, which promises to reward
+one million dollars to anyone who can solve the P vs. NP problem. Although the question is simple, the implication is significant. </p>
+<h1>Implications of P = NP</h1>
+<p>If P = NP is proven, then this implies that all problems that can be
+verified in polynomial time can also be solved in polynomial time as well. The
+impact extends beyond the academic world since many industrial algorithms including
+cryptography are written under the assumption that P != NP.</p>
+<p>For example, RSA, which is a widely used cryptosystem to secure data
+transmission, exploits P != NP by designing a decryption algorithm that runs in
+polynomial time only for those who have the right access (known as a private key). If you
+do not have the private key (meaning you do not have access), you would need to solve
+the RSA problem, which is a NP problem since there is no known algorithm that
+can decrypt encryption in polynomial time.</p>
+<p>However, if P = NP is proven true, this implies that there exists some
+algorithms that can solve the RSA problem in polynomial time, meaning any
+encrypted message can be decrypted easily by even those who should not have
+access if they can find the polynomial-time decryption algorithm, which is not
+supposed to exist under the P != NP assumption. </p>
+<p>Obviously, this is a significant security threat since this "encrpyted message"
+could be a private message that you may not wish to share or even financial
+information that can be hijacked.</p>
+<p><strong>Therefore, if P = NP is true, many of the current algorithms that assume P !=
+NP become insecure or invalid, and people can maliciously exploit the algorithm
+for their personal gains.</strong></p>
+<h1>Implications of P != NP</h1>
+<p>If P != NP is true, there are some NP problems that will never be transition
+into P, meaning there never will be algorithms that can solve those NP problems
+in polynomial time.  </p>
+<p>Although the impact of this proof will not be as significant as P = NP since most of the the academia and the industry already assume P != NP, the proof will influence how
+researchers spend their time. <strong>Since there cannot be a
+polynomial-time solution for some NP problems, researchers would no longer have
+to waste their time trying to find fast algorithms for problems in NP.</strong></p>
+<hr />
+<h1>Extra Note</h1>
+<p>NP stands for "non-deterministic polynomial time" and although P does
+not have an official abbreviation, it is commonly known as "deterministic
+polynomial time". A non-deterministic polynomial problem can be
+solved in polynomial time with some lucky guesses. For example, finding a
+least-cost cycle
+that visits every node in a graph is known as a Travelling Salesman Problem,
+which is notoriously difficult. However, if our solution algorithm makes certain
+smart/lucky decisions in finding the path, the optimal path could be found in
+polynomial time.</p>
+<p>Meanwhile, the P problem can find a solution in polynomial time without depending on luck. As mentioned
+before, since P is in NP under P != NP, P problems can also find polynomial-time
+solution with some lucky guesses.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/how-to-make-a-website-with-github-pages-and-pelican.html" rel="bookmark"
+                           title="Permalink to [HOW-TO] Make a website with GitHub Pages and Pelican">[HOW-TO] Make a website with GitHub Pages and Pelican</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-05-18T00:00:00-07:00">
+                Published: Mon 18 May 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/don-han.html">Don Han</a>
+        </address>
+<p>In <a href="/category/articles.html">articles</a>.</p>
+<p>tags: <a href="/tag/how-to.html">how-to</a> <a href="/tag/web-dev.html">web-dev</a> </p>
+</footer><!-- /.post-info -->                <hr />
+<p>This article is intended for audience who has some knowledge on GitHub Pages and
+Pelican, but was unable to integrate two successfully. Therefore, many steps
+below assume you are fully aware of the consequence and the context of commands
+to be executed. Since there are already many instructional guides for ...</p>
+                <a class="readmore" href="/how-to-make-a-website-with-github-pages-and-pelican.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://www.linkedin.com/in/donhan">LinkedIn</a></li>
+                            <li><a href="https://github.com/don-han">GitHub</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
