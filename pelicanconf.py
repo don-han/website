@@ -23,7 +23,8 @@ SOCIAL = (('LinkedIn', 'https://www.linkedin.com/in/donhan'),
 
 DEFAULT_PAGINATION = 10
 
-STATIC_PATHS = ['images', 'extra/CNAME']
-EXTRA_PATH_METADATA = {'extra/CNAME': {'path':'CNAME'},}
+STATIC_PATHS = ['images', 'extra']
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path':'CNAME'},
+                       'extra/Resume_Don_Han.pdf':{'path':'Resume_Don_Han.pdf'},}
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
