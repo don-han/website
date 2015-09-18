@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Don Han - how-to</title>
+        <link rel="stylesheet" href="https://don-han.github.io/website/theme/css/main.css" />
+        <link href="https://don-han.github.io/website/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Don Han Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://don-han.github.io/website/">Don Han </a></h1>
+                <nav><ul>
+                    <li><a href="https://don-han.github.io/website/pages/about.html">about</a></li>
+                    <li><a href="https://don-han.github.io/website/pages/projects.html">projects</a></li>
+                    <li><a href="https://don-han.github.io/website/category/articles.html">articles</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://don-han.github.io/website/how-to-make-a-website-with-github-pages-and-pelican.html">[HOW-TO] Make a website with GitHub Pages and Pelican</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-05-18T00:00:00-07:00">
+                Published: Mon 18 May 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://don-han.github.io/website/author/don-han.html">Don Han</a>
+        </address>
+<p>In <a href="https://don-han.github.io/website/category/articles.html">articles</a>.</p>
+<p>tags: <a href="https://don-han.github.io/website/tag/how-to.html">how-to</a> <a href="https://don-han.github.io/website/tag/web-dev.html">web-dev</a> </p>
+</footer><!-- /.post-info --><hr />
+<p>This article is intended for audience who has some knowledge on GitHub Pages and
+Pelican, but was unable to integrate two successfully. Therefore, many steps
+below assume you are fully aware of the consequence and the context of commands
+to be executed. Since there are already many instructional guides for GitHub
+Pages and Pelican, my main focus will be on how to incorporate Pelican into
+GitHub Pages.</p>
+<hr />
+<p>Although GitHub Pages and Pelican are very easy to use on their own, I had a
+trouble integrating them together. The main difficulty was GitHub Pages trying
+to build a website with files on root when Pelican generates the website on
+subfolder called 'output'. </p>
+<p>Some bloggers suggested creating two separate GitHub repos: one for entire files
+and another for just the output folder. However, I did not like the idea of
+having to keep track of two different repositories for one project. </p>
+<p>At one point or another, I thought of moving to Jekyll which is officially
+supported by GitHub Pages, but I like Python more, so I decided to stick to it.
+After a few hours of struggle, this is what I came to:</p>
+<ol>
+<li>
+<p>Create your GitHub repo that will store your website. It doesn't have to
+follow the <code>username.github.io</code> format (my repo is named <code>website</code>).</p>
+</li>
+<li>
+<p>Make .gitignore with</p>
+<p><code>output/</code></p>
+</li>
+<li>
+<p>Create a skeleton project with <code>pelican-quickstart</code>.</p>
+</li>
+<li>
+<p>After you finish writing contents and customizing, you can generate
+your site with <code>pelican content</code>. By default, this will create your website
+structure on 'output' folder.</p>
+</li>
+<li>
+<p>Install ghp-import (<code>pip install ghp-import</code>) and do <code>ghp-import output</code>. To quote the creator, it is "a
+script that can copy a directory to the gh-pages branch of the repository." More information about
+ghp-import <a href="https://github.com/davisp/ghp-import">here</a>. </p>
+</li>
+<li>
+<p>Then, to update your changes online, <code>git push origin gh-pages</code> </p>
+</li>
+<li>
+<p>Finally, <code>git add .</code> and <code>git commit -m "your message"</code> on project's root
+directory and push it to master with <code>git push origin master</code>. </p>
+</li>
+</ol>
+<p>At this point, your website will be hosted on
+https://<code>username</code>.github.io/<code>project_name</code>. Replace <code>username</code> and
+<code>repo_name</code> with your own GitHub username and repository name, respectively. </p>
+<p>The main idea is to store all your code in one repository but divide generating
+source code and the output folder into two different branches. The source code
+will be stored in the master branch while the output folder will be stored in
+gh-pages which is used to render the website.</p>
+<p>When you want to make further changes, you can repeat process 4~7 until you are
+satisfied.  Also, 5 and 6 could be combined by <code>ghp-import -p output</code>. </p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://don-han.github.io/website/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://www.linkedin.com/in/donhan">LinkedIn</a></li>
+                            <li><a href="https://github.com/don-han">GitHub</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
