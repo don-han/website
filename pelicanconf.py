@@ -15,6 +15,9 @@ FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
+# Theme
+THEME = "blue-penguin"
+
 # Blogroll
 #LINKS =  ( ) 
 # Social widget
