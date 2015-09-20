@@ -28,7 +28,128 @@
         </div>
     </header>
     <div id="wrapper">
-        <div id="content">            <h4 class="date">Sep 18, 2015</h4>
+        <div id="content">            <h4 class="date">Sep 19, 2015</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="https://don-han.github.io/website/bash-parallel-programming.html" rel="bookmark" title="Permanent Link to &quot;[HOW-TO] Bash Parallel Programming&quot;">[HOW-TO] Bash Parallel Programming</a>
+                </h2>
+
+                <p>Parallel programming basically means writing scripts that can process multiple
+tasks at the same. This is in contrast to running scripts in a serial order which requires the
+previous tasks to be completed before moving onto the next.</p>
+<p>Parallelization can be used to boost the performance, but it requires the tasks
+that are going to be parallelized be independent of one another. Therefore, in
+this tutorial, we will refer to the function <code>do-something</code> as a task that can
+be safely run in parallel. For didactic purpose, we define <code>do-something</code> as follows:</p>
+<div class="highlight"><pre><span class="k">function</span> <span class="k">do</span>-something<span class="o">(){</span>
+    sleep <span class="nv">$1</span>
+    <span class="nb">echo</span> <span class="nv">$1</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>There are several ways of parallelizing a bash script, and each has its own pros
+and cons.</p>
+<p>1.</p>
+<div class="highlight"><pre><span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">5</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>This is the simplest form of parallelization in bash. &amp;amp forks each
+<code>do-something</code> task to the background everytime it's called.</p>
+<p>If you run the script, your output should look something like this:</p>
+<div class="highlight"><pre>1
+2
+3
+4
+5
+</pre></div>
+
+
+<p>Even though our script runs from 5 to 1, <code>do-something</code> task with the shortest sleeping time gets finished first.</p>
+<p>Also, note the speed improvement. Our serial script runs in <code>5+4+3+2+1=15</code>
+seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &amp;amp!</p>
+<p>However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your <code>do-something</code> does something far more intensive. Then, your &amp;amp can overload the server. Our next method prevents that.</p>
+<p>ADVATAGE: simple
+DISADVANTAGE: can potentially overload the system</p>
+<ol>
+<li></li>
+</ol>
+<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
+<span class="nv">j</span><span class="o">=</span>1
+<span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
+    <span class="k">if</span> <span class="o">((</span>j++ % <span class="nv">wait_turn</span> <span class="o">==</span> 0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">wait</span>
+<span class="nb">    </span><span class="k">fi</span>
+<span class="k">done</span>
+<span class="nb">wait</span>
+<span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
+</pre></div>
+
+
+<p>Running this, our result should look something like this:</p>
+<div class="highlight"><pre>7
+8
+9
+10
+3
+4
+5
+6
+1
+2
+after loop
+</pre></div>
+
+
+<p>Can you see the pattern?</p>
+<p>Once our <code>wait</code> function is called, the shell "waits" until all background tasks
+are finished. In this case, a batch of four tasks are forked into the background at a time, and the script waits until all the processes are complete. </p>
+<p>The value of wait_turn has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. </p>
+<p>A keen observer might have noted the another <code>wait</code> function after the function.
+To illustrate its need, consider a similar script:</p>
+<div class="highlight"><pre><span class="x">wait_turn=4</span>
+<span class="x">j=1</span>
+<span class="x">for i in </span><span class="p">$(</span><span class="err">seq</span> <span class="m">10</span> <span class="m">1</span><span class="p">)</span><span class="x">; do</span>
+<span class="x">    do-something </span><span class="p">$</span><span class="nv">i</span><span class="x"> &amp;</span>
+<span class="x">    if ((j++ % wait_turn == 0)); then</span>
+<span class="x">        wait</span>
+<span class="x">    fi</span>
+<span class="x">done</span>
+<span class="x">echo &quot;after loop&quot;</span>
+</pre></div>
+
+
+<p>Before scrolling down, think what this would output.</p>
+<div class="highlight"><pre>7
+8
+9
+10
+3
+4
+5
+6
+after loop
+1
+2
+</pre></div>
+
+
+<p>Notice how our after loop comes before <code>do-something 1</code> and <code>do-something 2</code> is
+processed. This could be critical if you have an after-loop code that needs the
+for loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for loop for the first method if necessary.</p>
+<p>[[ MORE COMING ]]</p>
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="https://don-han.github.io/website/bash-parallel-programming.html">posted at 00:00</a>
+                    &nbsp;&middot;&nbsp;<a href="https://don-han.github.io/website/category/articles.html" rel="tag">articles</a>
+                </div>
+            </article>            <h4 class="date">Sep 18, 2015</h4>
 
             <article class="post">
                 <h2 class="title">
