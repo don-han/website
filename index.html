@@ -55,7 +55,7 @@ and cons.</p>
 </pre></div>
 
 
-<p>This is the simplest form of parallelization in bash. &amp;amp forks each
+<p>This is the simplest form of parallelization in bash. &amp; forks each
 <code>do-something</code> task to the background everytime it's called.</p>
 <p>If you run the script, your output should look something like this:</p>
 <div class="highlight"><pre>1
@@ -68,10 +68,10 @@ and cons.</p>
 
 <p>Even though our script runs from 5 to 1, <code>do-something</code> task with the shortest sleeping time gets finished first.</p>
 <p>Also, note the speed improvement. Our serial script runs in <code>5+4+3+2+1=15</code>
-seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &amp;amp!</p>
-<p>However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your <code>do-something</code> does something far more intensive. Then, your &amp;amp can overload the server. Our next method prevents that.</p>
-<p>ADVATAGE: simple
-DISADVANTAGE: can potentially overload the system</p>
+seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &amp;!</p>
+<p>However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your <code>do-something</code> does something far more intensive. Then, your &amp; can overload the server. Our next method prevents that.</p>
+<p>ADVATAGE: simple</p>
+<p>DISADVANTAGE: can potentially overload the system</p>
 <ol>
 <li></li>
 </ol>
@@ -139,7 +139,7 @@ after loop
 <p>Notice how our after loop comes before <code>do-something 1</code> and <code>do-something 2</code> is
 processed. This could be critical if you have an after-loop code that needs the
 for loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for loop for the first method if necessary.</p>
-<p>[[ MORE COMING ]]</p>
+<p>[[ MORE ON XARG AND PARALLEL COMING ]]</p>
                 <div class="clear"></div>
 
                 <div class="info">
