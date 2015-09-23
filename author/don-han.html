@@ -156,7 +156,84 @@ after loop
 <p>Notice how our "after loop" string comes before <code>do-something 1</code> and <code>do-something 2</code> is
 processed. This could be critical if you have an after-loop code that needs the
 for-loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for-loop for the first method if necessary.</p>
-<p>[[ MORE ON XARG AND PARALLEL COMING ]]</p>
+<p>Yet, even this method can be restrictive. Consider a case where the total time
+of task completion varies greatly. For our example above, say every fifth tasks
+(<code>do-something 5</code>, <code>do-something 10</code>), for some odd reason, takes tremendous
+amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
+run our script again under this new condition, we can see that our script runs
+very inefficiently because for our first batch, even though tasks 7, 8, 9 are
+already completed, they would have to wait for one task, <code>do-something 10</code> to
+finish! Likewise, for our second batch, the threads that were working on tasks
+3, 4, and 6 are idling because they cannot move forward until <code>do-something 5</code>
+completes. In other words, if the batch contains an unusually slow task, it becomes
+the bottle neck and slows down the entire process, almost defeating the purpose
+of parallelism.</p>
+<p>ADVANTAGE: parallelization without overloading the system
+DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process</p>
+<p>3.</p>
+<p>Fortunately, UNIX/LINUX comes with a command called
+<a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> which whips idling tasks back to
+work. . <code>xargs</code> is not specifically designed to be used for parallelization, but
+it comes with a handy <code>-P</code> flag which defines the maximum number of processes that can run at
+a time. <code>xargs</code> is extremely flexible, so I will not go into too much details in
+this article, but I will cover the basics.</p>
+<p>For example,</p>
+<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P4 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+</pre></div>
+
+
+<p>To break it down, I give the input ranging from 10 to 1. Then, <code>xargs</code> separates
+the input into indiviual pieces (as specified by -n1, meaning take at most one
+argument). The big <code>-P</code> flag as mentioned is what gives the parallelization
+ability. Without it, the <code>xargs</code> runs the command in a serial manner. After we
+set the variable to <code>{}</code>, <code>-I</code> replaces all ocurrences of <code>{}</code> in the command
+with the input chunk, which in our case are individual numbers. Finally, <code>xargs</code>
+runs the bash, which, in turn, executes the string with all <code>{}</code> replaced with
+input chunks.</p>
+<p>The above snippet produces:</p>
+<div class="highlight"><pre>7
+8
+9
+10
+5
+4
+3
+6
+1
+2
+</pre></div>
+
+
+<p>As we have seen with #2, since we have limited to the four processes, only upto 4 tasks are processed at a time. However, if you take a look at the second batch, you will see that the numbers are not ordered as before. This is because <code>xargs</code> assigns tasks as soon as processes becomes available.</p>
+<p>Indeed, if we give as many processes as there are inputs, all processes will be handled at the same time as we would expect.</p>
+<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P10 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+</pre></div>
+
+
+<p>which rightly produces</p>
+<div class="highlight"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div>
+
+
+<p><code>xargs</code> should be sufficient for most users under most usage cases. Other than the fact that it's a tad bit more complicated than the first two methods I introduced above, <code>xargs</code> provides an efficient, easy way of implementing a parallel script.</p>
+<p>ADVANTAGE: eliminates bottleneck
+DISADVANTAGE: none for most users. See #4 for more</p>
+<ol>
+<li></li>
+</ol>
+<p>However, for some users, they might need something more powerful, in which case,
+I introduce you <a href="http://www.gnu.org/software/parallel/">GNU Parallel</a>.
+Thankfully, GNU parallel already detailed
+<a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel">reasons why you might want to switch over</a>.</p>
                 <div class="clear"></div>
 
                 <div class="info">
