@@ -1,6 +1,7 @@
 Title: [how-to] Bash Parallel Programming
 Slug: bash-parallel-programming
 Date: 2015-08-09
+Tags: how-to, bash, parallel programming
 
 Parallel programming basically means writing scripts that can process multiple
 tasks at the same. This is in contrast to running scripts in a serial order which requires the
