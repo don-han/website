@@ -10,6 +10,8 @@ to be executed. Since there are already many instructional guides for GitHub
 Pages and Pelican, my main focus will be on how to incorporate Pelican into
 GitHub Pages.
 ---
+UPDATE [2015-09-22]: It seems like running `make github` on your source branch achieves 4-6 steps for you. However, you will still need to do 7 if you want to save your changes. Also, although automation is nice, I advise you to go through the steps manually for the first few weeks if you are new to Pelican to understand what actually is going on under `make github`. If there is a problem with the automation, you will have better luck if you already understand the process.
+---
 
 Although GitHub Pages and Pelican are very easy to use on their own, I had a
 trouble integrating them together. The main difficulty was GitHub Pages trying
