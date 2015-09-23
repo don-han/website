@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Don Han</title><link href="https://don-han.github.io/website/" rel="alternate"></link><link href="https://don-han.github.io/website/feeds/articles.atom.xml" rel="self"></link><id>https://don-han.github.io/website/</id><updated>2015-09-18T00:00:00-07:00</updated><entry><title>Analysis of Berkeley Crime Rate</title><link href="https://don-han.github.io/website/analysis-of-berkeley-crime-rate.html" rel="alternate"></link><updated>2015-09-18T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.github.io,2015-09-18:website/analysis-of-berkeley-crime-rate.html</id><summary type="html">&lt;p&gt;&lt;img alt="Total number of crime per hour in Berkeley" src="/images/berkeley_crime1.png" /&gt;&lt;/p&gt;
-&lt;p&gt;Created using R&lt;/p&gt;</summary></entry><entry><title>[how-to] Bash Parallel Programming</title><link href="https://don-han.github.io/website/bash-parallel-programming.html" rel="alternate"></link><updated>2015-08-09T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.github.io,2015-08-09:website/bash-parallel-programming.html</id><summary type="html">&lt;p&gt;Parallel programming basically means writing scripts that can process multiple
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Don Han</title><link href="http://don-han.com/" rel="alternate"></link><link href="http://don-han.com/feeds/articles.atom.xml" rel="self"></link><id>http://don-han.com/</id><updated>2015-09-18T00:00:00-07:00</updated><entry><title>Analysis of Berkeley Crime Rate</title><link href="http://don-han.com/analysis-of-berkeley-crime-rate.html" rel="alternate"></link><updated>2015-09-18T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.com,2015-09-18:analysis-of-berkeley-crime-rate.html</id><summary type="html">&lt;p&gt;&lt;img alt="Total number of crime per hour in Berkeley" src="/images/berkeley_crime1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Created using R&lt;/p&gt;</summary></entry><entry><title>[how-to] Bash Parallel Programming</title><link href="http://don-han.com/bash-parallel-programming.html" rel="alternate"></link><updated>2015-08-09T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.com,2015-08-09:bash-parallel-programming.html</id><summary type="html">&lt;p&gt;Parallel programming basically means writing scripts that can process multiple
 tasks at the same. This is in contrast to running scripts in a serial order which requires the
 previous tasks to be completed before moving onto the next.&lt;/p&gt;
 &lt;p&gt;Parallelization can be useful for boosting the performance, but it requires the tasks
@@ -119,8 +119,8 @@ finish! Likewise, for our second batch, the threads that were working on tasks
 completes. In other words, if the batch contains an unusually slow task, it becomes
 the bottle neck and slows down the entire process, almost defeating the purpose
 of parallelism.&lt;/p&gt;
-&lt;p&gt;ADVANTAGE: parallelization without overloading the system
-DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process&lt;/p&gt;
+&lt;p&gt;ADVANTAGE: parallelization without overloading the system&lt;/p&gt;
+&lt;p&gt;DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process&lt;/p&gt;
 &lt;p&gt;3.&lt;/p&gt;
 &lt;p&gt;Fortunately, UNIX/LINUX comes with a command called
 &lt;a href="https://en.wikipedia.org/wiki/Xargs"&gt;&lt;code&gt;xargs&lt;/code&gt;&lt;/a&gt; which whips idling tasks back to
@@ -176,15 +176,15 @@ input chunks.&lt;/p&gt;
 
 
 &lt;p&gt;&lt;code&gt;xargs&lt;/code&gt; should be sufficient for most users under most usage cases. Other than the fact that it's a tad bit more complicated than the first two methods I introduced above, &lt;code&gt;xargs&lt;/code&gt; provides an efficient, easy way of implementing a parallel script.&lt;/p&gt;
-&lt;p&gt;ADVANTAGE: eliminates bottleneck
-DISADVANTAGE: none for most users. See #4 for more&lt;/p&gt;
+&lt;p&gt;ADVANTAGE: eliminates bottleneck&lt;/p&gt;
+&lt;p&gt;DISADVANTAGE: none for most users. See #4 for more&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;However, for some users, they might need something more powerful, in which case,
 I introduce you &lt;a href="http://www.gnu.org/software/parallel/"&gt;GNU Parallel&lt;/a&gt;.
 Thankfully, GNU parallel already detailed
-&lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;reasons why you might want to switch over&lt;/a&gt;.&lt;/p&gt;</summary></entry><entry><title>[intro-to] P vs. NP</title><link href="https://don-han.github.io/website/intro-to-p-vs-np.html" rel="alternate"></link><updated>2015-05-30T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.github.io,2015-05-30:website/intro-to-p-vs-np.html</id><summary type="html">&lt;p&gt;NOTE: The following article is intended as a gentle introduction
+&lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;reasons why you might want to switch over&lt;/a&gt;.&lt;/p&gt;</summary></entry><entry><title>[intro-to] P vs. NP</title><link href="http://don-han.com/intro-to-p-vs-np.html" rel="alternate"></link><updated>2015-05-30T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.com,2015-05-30:intro-to-p-vs-np.html</id><summary type="html">&lt;p&gt;NOTE: The following article is intended as a gentle introduction
 for the subject, so I have intentionally left out some information that I considered
 is out of scope. However, if you are familiar with the subject and if you think
 I presented &lt;em&gt;factually wrong&lt;/em&gt; statements, I will greatly appreciate an email
@@ -267,7 +267,7 @@ smart/lucky decisions in finding the path, the optimal path could be found in
 polynomial time.&lt;/p&gt;
 &lt;p&gt;Meanwhile, the P problem can find a solution in polynomial time without depending on luck. As mentioned
 before, since P is in NP under P != NP, P problems can also find polynomial-time
-solution with some lucky guesses.&lt;/p&gt;</summary><category term="intro-to"></category><category term="theory-of-computer-science"></category></entry><entry><title>[how-to] Make a website with GitHub Pages and Pelican</title><link href="https://don-han.github.io/website/how-to-make-a-website-with-github-pages-and-pelican.html" rel="alternate"></link><updated>2015-05-18T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.github.io,2015-05-18:website/how-to-make-a-website-with-github-pages-and-pelican.html</id><summary type="html">&lt;hr /&gt;
+solution with some lucky guesses.&lt;/p&gt;</summary><category term="intro-to"></category><category term="theory-of-computer-science"></category></entry><entry><title>[how-to] Make a website with GitHub Pages and Pelican</title><link href="http://don-han.com/how-to-make-a-website-with-github-pages-and-pelican.html" rel="alternate"></link><updated>2015-05-18T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.com,2015-05-18:how-to-make-a-website-with-github-pages-and-pelican.html</id><summary type="html">&lt;hr /&gt;
 &lt;p&gt;This article is intended for audience who has some knowledge on GitHub Pages and
 Pelican, but was unable to integrate two successfully. Therefore, many steps
 below assume you are fully aware of the consequence and the context of commands
