@@ -27,7 +27,7 @@ FILE_NAME="${TODATE}_${SLUG}"
 if [[ -z $PRIMARY_TAG ]]; then
     POST_NAME=${NAME}
 else
-    PRIMARY_TAG=$(echo $PRIMARY_TAG | tr a-z A-Z)
+    PRIMARY_TAG=$(echo $PRIMARY_TAG | tr A-Z a-z)
     POST_NAME="[${PRIMARY_TAG}] ${NAME}"
 fi
 
