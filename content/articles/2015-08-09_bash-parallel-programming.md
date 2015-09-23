@@ -140,6 +140,7 @@ the bottle neck and slows down the entire process, almost defeating the purpose
 of parallelism.
 
 ADVANTAGE: parallelization without overloading the system
+
 DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process
 
 3.
@@ -208,6 +209,7 @@ which rightly produces
 `xargs` should be sufficient for most users under most usage cases. Other than the fact that it's a tad bit more complicated than the first two methods I introduced above, `xargs` provides an efficient, easy way of implementing a parallel script.
 
 ADVANTAGE: eliminates bottleneck
+
 DISADVANTAGE: none for most users. See #4 for more
 
 4. 
