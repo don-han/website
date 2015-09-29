@@ -18,93 +18,106 @@ be safely run in parallel. For didactic purpose, we define &lt;code&gt;do-someth
 &lt;p&gt;There are several ways of parallelizing a bash script, and each has its own pros
 and cons.&lt;/p&gt;
 &lt;p&gt;1.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;bash
-  for i in $(seq 5 1); do
-      do-something $i &amp;amp;
-  done&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for&lt;/span&gt; i in &lt;span class="k"&gt;$(&lt;/span&gt;seq &lt;span class="m"&gt;5&lt;/span&gt; 1&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="k"&gt;do&lt;/span&gt;-something &lt;span class="nv"&gt;$i&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;This is the simplest form of parallelization in bash. &lt;code&gt;&amp;amp;&lt;/code&gt; forks each
-  &lt;code&gt;do-something&lt;/code&gt; task to the background every time it's called.&lt;/p&gt;
+&lt;code&gt;do-something&lt;/code&gt; task to the background every time it's called.&lt;/p&gt;
 &lt;p&gt;If you run this parallel script, your output should look something like this:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;1
-  2
-  3
-  4
-  5&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Even though our script runs from 5 to 1, &lt;code&gt;do-something&lt;/code&gt; task with the shortest sleeping time gets finished first.&lt;/p&gt;
 &lt;p&gt;Also, note the speed improvement. Our serial script runs in &lt;code&gt;5+4+3+2+1=15&lt;/code&gt;
-  seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &lt;code&gt;&amp;amp;&lt;/code&gt;!&lt;/p&gt;
+seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &lt;code&gt;&amp;amp;&lt;/code&gt;!&lt;/p&gt;
 &lt;p&gt;However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your &lt;code&gt;do-something&lt;/code&gt; does something far more intensive. Then, your &lt;code&gt;&amp;amp;&lt;/code&gt; can easily overload the server. Our next method serves to prevent that.&lt;/p&gt;
 &lt;p&gt;ADVATAGE: simple&lt;/p&gt;
 &lt;p&gt;DISADVANTAGE: can potentially overload the system&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;code&gt;bash
-  wait_turn=4
-  j=1
-  for i in $(seq 10 1); do
-      do-something $i &amp;amp;
-      if ((j++ % wait_turn == 0)); then
-          wait
-      fi
-  done
-  wait
-  echo "after loop"&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;2.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;wait_turn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4
+&lt;span class="nv"&gt;j&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1
+&lt;span class="k"&gt;for&lt;/span&gt; i in &lt;span class="k"&gt;$(&lt;/span&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; 1&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="k"&gt;do&lt;/span&gt;-something &lt;span class="nv"&gt;$i&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;j++ % &lt;span class="nv"&gt;wait_turn&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; 0&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        &lt;span class="nb"&gt;wait&lt;/span&gt;
+&lt;span class="nb"&gt;    &lt;/span&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;span class="nb"&gt;wait&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;after loop&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Running this, our result should look something like this:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;7
-  8
-  9
-  10
-  3
-  4
-  5
-  6
-  1
-  2
-  after loop&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;7
+8
+9
+10
+3
+4
+5
+6
+1
+2
+after loop
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Can you see the pattern?&lt;/p&gt;
 &lt;p&gt;Once our &lt;code&gt;wait&lt;/code&gt; function is called, the shell "waits" until all background tasks
-  are finished. In this case, a batch of four tasks are forked into the background at a time as specified by &lt;code&gt;wait_turn&lt;/code&gt;, and the script waits until all four processes are complete. &lt;/p&gt;
+are finished. In this case, a batch of four tasks are forked into the background at a time as specified by &lt;code&gt;wait_turn&lt;/code&gt;, and the script waits until all four processes are complete. &lt;/p&gt;
 &lt;p&gt;The value of &lt;code&gt;wait_turn&lt;/code&gt; has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. Usually, the value is a multiple of the number of the cores you have.&lt;/p&gt;
 &lt;p&gt;A keen observer might have noted the another &lt;code&gt;wait&lt;/code&gt; function after the function.
-  To illustrate its need, consider a similar script without the after-loop &lt;code&gt;wait&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;bash
-  wait_turn=4
-  j=1
-  for i in $(seq 10 1); do
-      do-something $i &amp;amp;
-      if ((j++ % wait_turn == 0)); then
-          wait
-      fi
-  done
-  echo "after loop"&lt;/code&gt;&lt;/p&gt;
+To illustrate its need, consider a similar script without the after-loop &lt;code&gt;wait&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;wait_turn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4
+&lt;span class="nv"&gt;j&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1
+&lt;span class="k"&gt;for&lt;/span&gt; i in &lt;span class="k"&gt;$(&lt;/span&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; 1&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="k"&gt;do&lt;/span&gt;-something &lt;span class="nv"&gt;$i&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;j++ % &lt;span class="nv"&gt;wait_turn&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; 0&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        &lt;span class="nb"&gt;wait&lt;/span&gt;
+&lt;span class="nb"&gt;    &lt;/span&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;after loop&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Before scrolling down, think what this would output.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;7
-  8
-  9
-  10
-  3
-  4
-  5
-  6
-  after loop
-  1
-  2&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;7
+8
+9
+10
+3
+4
+5
+6
+after loop
+1
+2
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Notice how our "after loop" string comes before &lt;code&gt;do-something 1&lt;/code&gt; and &lt;code&gt;do-something 2&lt;/code&gt; is
-  processed. This could be critical if you have an after-loop code that needs the
-  for-loop to completely finish. Likewise, apply &lt;code&gt;wait&lt;/code&gt; fucntion after the for-loop for the first method if necessary.&lt;/p&gt;
+processed. This could be critical if you have an after-loop code that needs the
+for-loop to completely finish. Likewise, apply &lt;code&gt;wait&lt;/code&gt; fucntion after the for-loop for the first method if necessary.&lt;/p&gt;
 &lt;p&gt;Yet, even this method can be restrictive. Consider a case where the total time
-  of task completion varies greatly. For our example above, say every fifth tasks
-  (&lt;code&gt;do-something 5&lt;/code&gt;, &lt;code&gt;do-something 10&lt;/code&gt;), for some odd reason, takes tremendous
-  amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
-  run our script again under this new condition, we can see that our script runs
-  very inefficiently because for our first batch, even though tasks 7, 8, 9 are
-  already completed, they would have to wait for one task, &lt;code&gt;do-something 10&lt;/code&gt; to
-  finish! Likewise, for our second batch, the threads that were working on tasks
-  3, 4, and 6 are idling because they cannot move forward until &lt;code&gt;do-something 5&lt;/code&gt;
-  completes. In other words, if the batch contains an unusually slow task, it becomes
-  the bottle neck and slows down the entire process, almost defeating the purpose
-  of parallelism.&lt;/p&gt;
+of task completion varies greatly. For our example above, say every fifth tasks
+(&lt;code&gt;do-something 5&lt;/code&gt;, &lt;code&gt;do-something 10&lt;/code&gt;), for some odd reason, takes tremendous
+amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
+run our script again under this new condition, we can see that our script runs
+very inefficiently because for our first batch, even though tasks 7, 8, 9 are
+already completed, they would have to wait for one task, &lt;code&gt;do-something 10&lt;/code&gt; to
+finish! Likewise, for our second batch, the threads that were working on tasks
+3, 4, and 6 are idling because they cannot move forward until &lt;code&gt;do-something 5&lt;/code&gt;
+completes. In other words, if the batch contains an unusually slow task, it becomes
+the bottle neck and slows down the entire process, almost defeating the purpose
+of parallelism.&lt;/p&gt;
 &lt;p&gt;ADVANTAGE: parallelization without overloading the system&lt;/p&gt;
 &lt;p&gt;DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process&lt;/p&gt;
 &lt;p&gt;3.&lt;/p&gt;
@@ -164,9 +177,7 @@ input chunks.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;xargs&lt;/code&gt; should be sufficient for most users under most usage cases. Other than the fact that it's a tad bit more complicated than the first two methods I introduced above, &lt;code&gt;xargs&lt;/code&gt; provides an efficient, easy way of implementing a parallel script.&lt;/p&gt;
 &lt;p&gt;ADVANTAGE: eliminates bottleneck&lt;/p&gt;
 &lt;p&gt;DISADVANTAGE: none for most users. See #4 for more&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;4. &lt;/p&gt;
 &lt;p&gt;However, for some users, they might need something more powerful, in which case,
 I introduce you &lt;a href="http://www.gnu.org/software/parallel/"&gt;GNU Parallel&lt;/a&gt;.
 Thankfully, GNU parallel already detailed

@@ -69,93 +69,106 @@ be safely run in parallel. For didactic purpose, we define <code>do-something</c
 <p>There are several ways of parallelizing a bash script, and each has its own pros
 and cons.</p>
 <p>1.</p>
-<p><code>bash
-  for i in $(seq 5 1); do
-      do-something $i &amp;
-  done</code></p>
+<div class="highlight"><pre><span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">5</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
+<span class="k">done</span>
+</pre></div>
+
+
 <p>This is the simplest form of parallelization in bash. <code>&amp;</code> forks each
-  <code>do-something</code> task to the background every time it's called.</p>
+<code>do-something</code> task to the background every time it's called.</p>
 <p>If you run this parallel script, your output should look something like this:</p>
-<p><code>1
-  2
-  3
-  4
-  5</code></p>
+<div class="highlight"><pre>1
+2
+3
+4
+5
+</pre></div>
+
+
 <p>Even though our script runs from 5 to 1, <code>do-something</code> task with the shortest sleeping time gets finished first.</p>
 <p>Also, note the speed improvement. Our serial script runs in <code>5+4+3+2+1=15</code>
-  seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching <code>&amp;</code>!</p>
+seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching <code>&amp;</code>!</p>
 <p>However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your <code>do-something</code> does something far more intensive. Then, your <code>&amp;</code> can easily overload the server. Our next method serves to prevent that.</p>
 <p>ADVATAGE: simple</p>
 <p>DISADVANTAGE: can potentially overload the system</p>
-<ol>
-<li></li>
-</ol>
-<p><code>bash
-  wait_turn=4
-  j=1
-  for i in $(seq 10 1); do
-      do-something $i &amp;
-      if ((j++ % wait_turn == 0)); then
-          wait
-      fi
-  done
-  wait
-  echo "after loop"</code></p>
+<p>2.</p>
+<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
+<span class="nv">j</span><span class="o">=</span>1
+<span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
+    <span class="k">if</span> <span class="o">((</span>j++ % <span class="nv">wait_turn</span> <span class="o">==</span> 0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">wait</span>
+<span class="nb">    </span><span class="k">fi</span>
+<span class="k">done</span>
+<span class="nb">wait</span>
+<span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
+</pre></div>
+
+
 <p>Running this, our result should look something like this:</p>
-<p><code>7
-  8
-  9
-  10
-  3
-  4
-  5
-  6
-  1
-  2
-  after loop</code></p>
+<div class="highlight"><pre>7
+8
+9
+10
+3
+4
+5
+6
+1
+2
+after loop
+</pre></div>
+
+
 <p>Can you see the pattern?</p>
 <p>Once our <code>wait</code> function is called, the shell "waits" until all background tasks
-  are finished. In this case, a batch of four tasks are forked into the background at a time as specified by <code>wait_turn</code>, and the script waits until all four processes are complete. </p>
+are finished. In this case, a batch of four tasks are forked into the background at a time as specified by <code>wait_turn</code>, and the script waits until all four processes are complete. </p>
 <p>The value of <code>wait_turn</code> has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. Usually, the value is a multiple of the number of the cores you have.</p>
 <p>A keen observer might have noted the another <code>wait</code> function after the function.
-  To illustrate its need, consider a similar script without the after-loop <code>wait</code>:</p>
-<p><code>bash
-  wait_turn=4
-  j=1
-  for i in $(seq 10 1); do
-      do-something $i &amp;
-      if ((j++ % wait_turn == 0)); then
-          wait
-      fi
-  done
-  echo "after loop"</code></p>
+To illustrate its need, consider a similar script without the after-loop <code>wait</code>:</p>
+<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
+<span class="nv">j</span><span class="o">=</span>1
+<span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
+    <span class="k">if</span> <span class="o">((</span>j++ % <span class="nv">wait_turn</span> <span class="o">==</span> 0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">wait</span>
+<span class="nb">    </span><span class="k">fi</span>
+<span class="k">done</span>
+<span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
+</pre></div>
+
+
 <p>Before scrolling down, think what this would output.</p>
-<p><code>7
-  8
-  9
-  10
-  3
-  4
-  5
-  6
-  after loop
-  1
-  2</code></p>
+<div class="highlight"><pre>7
+8
+9
+10
+3
+4
+5
+6
+after loop
+1
+2
+</pre></div>
+
+
 <p>Notice how our "after loop" string comes before <code>do-something 1</code> and <code>do-something 2</code> is
-  processed. This could be critical if you have an after-loop code that needs the
-  for-loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for-loop for the first method if necessary.</p>
+processed. This could be critical if you have an after-loop code that needs the
+for-loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for-loop for the first method if necessary.</p>
 <p>Yet, even this method can be restrictive. Consider a case where the total time
-  of task completion varies greatly. For our example above, say every fifth tasks
-  (<code>do-something 5</code>, <code>do-something 10</code>), for some odd reason, takes tremendous
-  amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
-  run our script again under this new condition, we can see that our script runs
-  very inefficiently because for our first batch, even though tasks 7, 8, 9 are
-  already completed, they would have to wait for one task, <code>do-something 10</code> to
-  finish! Likewise, for our second batch, the threads that were working on tasks
-  3, 4, and 6 are idling because they cannot move forward until <code>do-something 5</code>
-  completes. In other words, if the batch contains an unusually slow task, it becomes
-  the bottle neck and slows down the entire process, almost defeating the purpose
-  of parallelism.</p>
+of task completion varies greatly. For our example above, say every fifth tasks
+(<code>do-something 5</code>, <code>do-something 10</code>), for some odd reason, takes tremendous
+amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
+run our script again under this new condition, we can see that our script runs
+very inefficiently because for our first batch, even though tasks 7, 8, 9 are
+already completed, they would have to wait for one task, <code>do-something 10</code> to
+finish! Likewise, for our second batch, the threads that were working on tasks
+3, 4, and 6 are idling because they cannot move forward until <code>do-something 5</code>
+completes. In other words, if the batch contains an unusually slow task, it becomes
+the bottle neck and slows down the entire process, almost defeating the purpose
+of parallelism.</p>
 <p>ADVANTAGE: parallelization without overloading the system</p>
 <p>DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process</p>
 <p>3.</p>
@@ -215,9 +228,7 @@ input chunks.</p>
 <p><code>xargs</code> should be sufficient for most users under most usage cases. Other than the fact that it's a tad bit more complicated than the first two methods I introduced above, <code>xargs</code> provides an efficient, easy way of implementing a parallel script.</p>
 <p>ADVANTAGE: eliminates bottleneck</p>
 <p>DISADVANTAGE: none for most users. See #4 for more</p>
-<ol>
-<li></li>
-</ol>
+<p>4. </p>
 <p>However, for some users, they might need something more powerful, in which case,
 I introduce you <a href="http://www.gnu.org/software/parallel/">GNU Parallel</a>.
 Thankfully, GNU parallel already detailed
