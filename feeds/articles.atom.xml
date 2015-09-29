@@ -18,38 +18,24 @@ be safely run in parallel. For didactic purpose, we define &lt;code&gt;do-someth
 &lt;p&gt;There are several ways of parallelizing a bash script, and each has its own pros
 and cons.&lt;/p&gt;
 &lt;p&gt;1.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;```bash&lt;/span&gt;
-&lt;span class="x"&gt;for i in &lt;/span&gt;&lt;span class="p"&gt;$(&lt;/span&gt;&lt;span class="err"&gt;seq&lt;/span&gt; &lt;span class="m"&gt;5&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;; do&lt;/span&gt;
-&lt;span class="x"&gt;do-something &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="x"&gt; &amp;amp;&lt;/span&gt;
-&lt;span class="x"&gt;done&lt;/span&gt;
-&lt;span class="x"&gt;```&lt;/span&gt;
-
-&lt;span class="x"&gt;This is the simplest form of parallelization in bash. `&amp;amp;` forks each&lt;/span&gt;
-&lt;span class="x"&gt;`do-something` task to the background every time it&amp;#39;s called.&lt;/span&gt;
-
-&lt;span class="x"&gt;If you run this parallel script, your output should look something like this:&lt;/span&gt;
-
-&lt;span class="x"&gt;```&lt;/span&gt;
-&lt;span class="x"&gt;1&lt;/span&gt;
-&lt;span class="x"&gt;2&lt;/span&gt;
-&lt;span class="x"&gt;3&lt;/span&gt;
-&lt;span class="x"&gt;4&lt;/span&gt;
-&lt;span class="x"&gt;5&lt;/span&gt;
-&lt;span class="x"&gt;```&lt;/span&gt;
-
-&lt;span class="x"&gt;Even though our script runs from 5 to 1, `do-something` task with the shortest sleeping time gets finished first.&lt;/span&gt;
-
-&lt;span class="x"&gt;Also, note the speed improvement. Our serial script runs in `5+4+3+2+1=15`&lt;/span&gt;
-&lt;span class="x"&gt;seconds while our parallel should theoretically run in 5 seconds. That&amp;#39;s 3 times performance improvement by just attaching `&amp;amp;`!&lt;/span&gt;
-
-&lt;span class="x"&gt;However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your `do-something` does something far more intensive. Then, your `&amp;amp;` can easily overload the server. Our next method serves to prevent that.&lt;/span&gt;
-
-&lt;span class="x"&gt;ADVATAGE: simple&lt;/span&gt;
-
-&lt;span class="x"&gt;DISADVANTAGE: can potentially overload the system&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
+&lt;p&gt;&lt;code&gt;bash
+  for i in $(seq 5 1); do
+      do-something $i &amp;amp;
+  done&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This is the simplest form of parallelization in bash. &lt;code&gt;&amp;amp;&lt;/code&gt; forks each
+  &lt;code&gt;do-something&lt;/code&gt; task to the background every time it's called.&lt;/p&gt;
+&lt;p&gt;If you run this parallel script, your output should look something like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;1
+  2
+  3
+  4
+  5&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Even though our script runs from 5 to 1, &lt;code&gt;do-something&lt;/code&gt; task with the shortest sleeping time gets finished first.&lt;/p&gt;
+&lt;p&gt;Also, note the speed improvement. Our serial script runs in &lt;code&gt;5+4+3+2+1=15&lt;/code&gt;
+  seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &lt;code&gt;&amp;amp;&lt;/code&gt;!&lt;/p&gt;
+&lt;p&gt;However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your &lt;code&gt;do-something&lt;/code&gt; does something far more intensive. Then, your &lt;code&gt;&amp;amp;&lt;/code&gt; can easily overload the server. Our next method serves to prevent that.&lt;/p&gt;
+&lt;p&gt;ADVATAGE: simple&lt;/p&gt;
+&lt;p&gt;DISADVANTAGE: can potentially overload the system&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;

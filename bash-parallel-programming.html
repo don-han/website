@@ -52,38 +52,24 @@ be safely run in parallel. For didactic purpose, we define <code>do-something</c
 <p>There are several ways of parallelizing a bash script, and each has its own pros
 and cons.</p>
 <p>1.</p>
-<div class="highlight"><pre><span class="x">```bash</span>
-<span class="x">for i in </span><span class="p">$(</span><span class="err">seq</span> <span class="m">5</span> <span class="m">1</span><span class="p">)</span><span class="x">; do</span>
-<span class="x">do-something </span><span class="p">$</span><span class="nv">i</span><span class="x"> &amp;</span>
-<span class="x">done</span>
-<span class="x">```</span>
-
-<span class="x">This is the simplest form of parallelization in bash. `&amp;` forks each</span>
-<span class="x">`do-something` task to the background every time it&#39;s called.</span>
-
-<span class="x">If you run this parallel script, your output should look something like this:</span>
-
-<span class="x">```</span>
-<span class="x">1</span>
-<span class="x">2</span>
-<span class="x">3</span>
-<span class="x">4</span>
-<span class="x">5</span>
-<span class="x">```</span>
-
-<span class="x">Even though our script runs from 5 to 1, `do-something` task with the shortest sleeping time gets finished first.</span>
-
-<span class="x">Also, note the speed improvement. Our serial script runs in `5+4+3+2+1=15`</span>
-<span class="x">seconds while our parallel should theoretically run in 5 seconds. That&#39;s 3 times performance improvement by just attaching `&amp;`!</span>
-
-<span class="x">However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your `do-something` does something far more intensive. Then, your `&amp;` can easily overload the server. Our next method serves to prevent that.</span>
-
-<span class="x">ADVATAGE: simple</span>
-
-<span class="x">DISADVANTAGE: can potentially overload the system</span>
-</pre></div>
-
-
+<p><code>bash
+  for i in $(seq 5 1); do
+      do-something $i &amp;
+  done</code></p>
+<p>This is the simplest form of parallelization in bash. <code>&amp;</code> forks each
+  <code>do-something</code> task to the background every time it's called.</p>
+<p>If you run this parallel script, your output should look something like this:</p>
+<p><code>1
+  2
+  3
+  4
+  5</code></p>
+<p>Even though our script runs from 5 to 1, <code>do-something</code> task with the shortest sleeping time gets finished first.</p>
+<p>Also, note the speed improvement. Our serial script runs in <code>5+4+3+2+1=15</code>
+  seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching <code>&amp;</code>!</p>
+<p>However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your <code>do-something</code> does something far more intensive. Then, your <code>&amp;</code> can easily overload the server. Our next method serves to prevent that.</p>
+<p>ADVATAGE: simple</p>
+<p>DISADVANTAGE: can potentially overload the system</p>
 <ol>
 <li></li>
 </ol>
