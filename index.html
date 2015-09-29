@@ -88,82 +88,72 @@ and cons.</p>
 <ol>
 <li></li>
 </ol>
-<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
-<span class="nv">j</span><span class="o">=</span>1
-<span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
-    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
-    <span class="k">if</span> <span class="o">((</span>j++ % <span class="nv">wait_turn</span> <span class="o">==</span> 0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">wait</span>
-<span class="nb">    </span><span class="k">fi</span>
-<span class="k">done</span>
-<span class="nb">wait</span>
-<span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
-</pre></div>
-
-
+<p><code>bash
+  wait_turn=4
+  j=1
+  for i in $(seq 10 1); do
+      do-something $i &amp;
+      if ((j++ % wait_turn == 0)); then
+          wait
+      fi
+  done
+  wait
+  echo "after loop"</code></p>
 <p>Running this, our result should look something like this:</p>
-<div class="highlight"><pre>7
-8
-9
-10
-3
-4
-5
-6
-1
-2
-after loop
-</pre></div>
-
-
+<p><code>7
+  8
+  9
+  10
+  3
+  4
+  5
+  6
+  1
+  2
+  after loop</code></p>
 <p>Can you see the pattern?</p>
 <p>Once our <code>wait</code> function is called, the shell "waits" until all background tasks
-are finished. In this case, a batch of four tasks are forked into the background at a time as specified by <code>wait_turn</code>, and the script waits until all four processes are complete. </p>
+  are finished. In this case, a batch of four tasks are forked into the background at a time as specified by <code>wait_turn</code>, and the script waits until all four processes are complete. </p>
 <p>The value of <code>wait_turn</code> has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. Usually, the value is a multiple of the number of the cores you have.</p>
 <p>A keen observer might have noted the another <code>wait</code> function after the function.
-To illustrate its need, consider a similar script without the after-loop <code>wait</code>:</p>
-<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
-<span class="nv">j</span><span class="o">=</span>1
-<span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
-    <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
-    <span class="k">if</span> <span class="o">((</span>j++ % <span class="nv">wait_turn</span> <span class="o">==</span> 0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">wait</span>
-<span class="nb">    </span><span class="k">fi</span>
-<span class="k">done</span>
-<span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
-</pre></div>
-
-
+  To illustrate its need, consider a similar script without the after-loop <code>wait</code>:</p>
+<p><code>bash
+  wait_turn=4
+  j=1
+  for i in $(seq 10 1); do
+      do-something $i &amp;
+      if ((j++ % wait_turn == 0)); then
+          wait
+      fi
+  done
+  echo "after loop"</code></p>
 <p>Before scrolling down, think what this would output.</p>
-<div class="highlight"><pre>7
-8
-9
-10
-3
-4
-5
-6
-after loop
-1
-2
-</pre></div>
-
-
+<p><code>7
+  8
+  9
+  10
+  3
+  4
+  5
+  6
+  after loop
+  1
+  2</code></p>
 <p>Notice how our "after loop" string comes before <code>do-something 1</code> and <code>do-something 2</code> is
-processed. This could be critical if you have an after-loop code that needs the
-for-loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for-loop for the first method if necessary.</p>
+  processed. This could be critical if you have an after-loop code that needs the
+  for-loop to completely finish. Likewise, apply <code>wait</code> fucntion after the for-loop for the first method if necessary.</p>
 <p>Yet, even this method can be restrictive. Consider a case where the total time
-of task completion varies greatly. For our example above, say every fifth tasks
-(<code>do-something 5</code>, <code>do-something 10</code>), for some odd reason, takes tremendous
-amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
-run our script again under this new condition, we can see that our script runs
-very inefficiently because for our first batch, even though tasks 7, 8, 9 are
-already completed, they would have to wait for one task, <code>do-something 10</code> to
-finish! Likewise, for our second batch, the threads that were working on tasks
-3, 4, and 6 are idling because they cannot move forward until <code>do-something 5</code>
-completes. In other words, if the batch contains an unusually slow task, it becomes
-the bottle neck and slows down the entire process, almost defeating the purpose
-of parallelism.</p>
+  of task completion varies greatly. For our example above, say every fifth tasks
+  (<code>do-something 5</code>, <code>do-something 10</code>), for some odd reason, takes tremendous
+  amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
+  run our script again under this new condition, we can see that our script runs
+  very inefficiently because for our first batch, even though tasks 7, 8, 9 are
+  already completed, they would have to wait for one task, <code>do-something 10</code> to
+  finish! Likewise, for our second batch, the threads that were working on tasks
+  3, 4, and 6 are idling because they cannot move forward until <code>do-something 5</code>
+  completes. In other words, if the batch contains an unusually slow task, it becomes
+  the bottle neck and slows down the entire process, almost defeating the purpose
+  of parallelism.</p>
 <p>ADVANTAGE: parallelization without overloading the system</p>
 <p>DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process</p>
 <p>3.</p>
