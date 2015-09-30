@@ -215,7 +215,20 @@ input chunks.</p>
 <p>However, for some users, they might need something more powerful, in which case,
 I introduce you <a href="http://www.gnu.org/software/parallel/">GNU Parallel</a>.
 Thankfully, GNU parallel already detailed
-<a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel">reasons why you might want to switch over</a>.</p>
+<a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel">reasons why you might want to switch over</a>. </p>
+<p>The parallel equivalent of </p>
+<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P10 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+</pre></div>
+
+
+<p>is</p>
+<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> parallel -P4 <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+</pre></div>
+
+
+<p>You can see that <code>parallel</code>syntax is a lot simpler than <code>xargs</code>.</p>
+<p>ADVANTAGE: refer to <a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel">the comparison between xargs and GNU Parallel</a>; to name a few, flexibility and simplicity
+DISADVANTAGE: external dependency</p>
                 <div class="clear"></div>
 
                 <div class="info">
