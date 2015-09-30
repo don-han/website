@@ -1,7 +1,7 @@
-Title: [how-to] Bash Parallel Programming
+Title: [intro-to] Bash Parallel Programming
 Slug: bash-parallel-programming
 Date: 2015-08-09
-Tags: how-to, bash, parallel programming
+Tags: intro-to, bash, parallel programming
 
 Parallel programming basically means writing scripts that can process multiple
 tasks at the same. This is in contrast to running scripts in a serial order which requires the
@@ -22,7 +22,7 @@ function do-something(){
 There are several ways of parallelizing a bash script, and each has its own pros
 and cons.
 
-1.
+1\.
 
 ```bash
 for i in $(seq 5 1); do
@@ -54,7 +54,7 @@ ADVATAGE: simple
 
 DISADVANTAGE: can potentially overload the system
 
-2. 
+2\.
 
 ```bash
 wait_turn=4
@@ -144,7 +144,7 @@ ADVANTAGE: parallelization without overloading the system
 
 DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process
 
-3.
+3\.
 
 Fortunately, UNIX/LINUX comes with a command called
 [`xargs`](https://en.wikipedia.org/wiki/Xargs) which whips idling tasks back to
@@ -213,9 +213,33 @@ ADVANTAGE: eliminates bottleneck
 
 DISADVANTAGE: none for most users. See #4 for more
 
-4. 
+4\. 
 
 However, for some users, they might need something more powerful, in which case,
 I introduce you [GNU Parallel](http://www.gnu.org/software/parallel/).
-Thankfully, GNU parallel already detailed
-[reasons why you might want to switch over](https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel).
+Thankfully, GNU Parallel already detailed
+[reasons why you might want to switch over](https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel). 
+
+The `parallel` equivalent of 
+```bash
+seq 10 1 | xargs -P4 -I {} bash -c "sleep {}; echo {};"
+```
+
+is
+
+```bash
+seq 10 1 | parallel -P4 "sleep {}; echo {};"
+```
+
+You can see that `parallel`syntax is a lot simpler than `xargs`.
+
+
+ADVANTAGE: refer to [the comparison between xargs and GNU Parallel](https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel); to name a few, flexibility and simplicity
+
+DISADVANTAGE: external dependency
+
+
+
+
+
+
