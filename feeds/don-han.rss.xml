@@ -180,10 +180,10 @@ input chunks.&lt;/p&gt;
 &lt;p&gt;4. &lt;/p&gt;
 &lt;p&gt;However, for some users, they might need something more powerful, in which case,
 I introduce you &lt;a href="http://www.gnu.org/software/parallel/"&gt;GNU Parallel&lt;/a&gt;.
-Thankfully, GNU parallel already detailed
+Thankfully, GNU Parallel already detailed
 &lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;reasons why you might want to switch over&lt;/a&gt;. &lt;/p&gt;
-&lt;p&gt;The parallel equivalent of &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs -n1 -P10 -I &lt;span class="o"&gt;{}&lt;/span&gt; bash -c &lt;span class="s2"&gt;&amp;quot;sleep {}; echo {};&amp;quot;&lt;/span&gt;
+&lt;p&gt;The &lt;code&gt;parallel&lt;/code&gt; equivalent of &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs -P4 -I &lt;span class="o"&gt;{}&lt;/span&gt; bash -c &lt;span class="s2"&gt;&amp;quot;sleep {}; echo {};&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -193,8 +193,8 @@ Thankfully, GNU parallel already detailed
 
 
 &lt;p&gt;You can see that &lt;code&gt;parallel&lt;/code&gt;syntax is a lot simpler than &lt;code&gt;xargs&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;ADVANTAGE: refer to &lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;the comparison between xargs and GNU Parallel&lt;/a&gt;; to name a few, flexibility and simplicity
-DISADVANTAGE: external dependency&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Don Han</dc:creator><pubDate>Sun, 09 Aug 2015 00:00:00 -0700</pubDate><guid>tag:don-han.com,2015-08-09:bash-parallel-programming.html</guid><category>intro-to</category><category>bash</category><category>parallel programming</category></item><item><title>[intro-to] P vs. NP</title><link>http://don-han.com/intro-to-p-vs-np.html</link><description>&lt;p&gt;NOTE: The following article is intended as a gentle introduction
+&lt;p&gt;ADVANTAGE: refer to &lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;the comparison between xargs and GNU Parallel&lt;/a&gt;; to name a few, flexibility and simplicity&lt;/p&gt;
+&lt;p&gt;DISADVANTAGE: external dependency&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Don Han</dc:creator><pubDate>Sun, 09 Aug 2015 00:00:00 -0700</pubDate><guid>tag:don-han.com,2015-08-09:bash-parallel-programming.html</guid><category>intro-to</category><category>bash</category><category>parallel programming</category></item><item><title>[intro-to] P vs. NP</title><link>http://don-han.com/intro-to-p-vs-np.html</link><description>&lt;p&gt;NOTE: The following article is intended as a gentle introduction
 for the subject, so I have intentionally left out some information that I considered
 is out of scope. However, if you are familiar with the subject and if you think
 I presented &lt;em&gt;factually wrong&lt;/em&gt; statements, I will greatly appreciate an email
