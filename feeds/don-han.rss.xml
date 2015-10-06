@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Don Han</title><link>http://don-han.com/</link><description></description><atom:link href="http://don-han.com/feeds/don-han.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 18 Sep 2015 00:00:00 -0700</lastBuildDate><item><title>Analysis of Berkeley Crime Rate</title><link>http://don-han.com/analysis-of-berkeley-crime-rate.html</link><description>&lt;p&gt;&lt;img alt="Line chart of plotting crime vs. month" src="/images/crime_per_month.png" /&gt;
-&lt;img alt="Line chart of plotting crim vs. hour" src="/images/crime_per_hour.png" /&gt;&lt;/p&gt;
+&lt;img alt="Line chart of plotting crim vs. hour" src="/images/crime_per_hour.png" /&gt;
+&lt;img alt="Stacked area chart of personal offences" src="/images/charted1.png" /&gt;
+&lt;img alt="Stacked area chart of property offences" src="/images/charted2.png" /&gt;&lt;/p&gt;
 &lt;p&gt;Created using R&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Don Han</dc:creator><pubDate>Fri, 18 Sep 2015 00:00:00 -0700</pubDate><guid>tag:don-han.com,2015-09-18:analysis-of-berkeley-crime-rate.html</guid><category>analysis</category><category>berkeley</category></item><item><title>[intro-to] Bash Parallel Programming</title><link>http://don-han.com/bash-parallel-programming.html</link><description>&lt;p&gt;Parallel programming basically means writing scripts that can process multiple
 tasks at the same. This is in contrast to running scripts in a serial order which requires the
 previous tasks to be completed before moving onto the next.&lt;/p&gt;
