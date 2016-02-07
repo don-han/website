@@ -2,6 +2,7 @@ Title: Analysis of Berkeley Crime Rate for Fall 2015
 Slug: analysis-of-berkeley-crime-rate
 Date: 2015-09-18
 Tags: analysis, berkeley
+Status: draft
 
 
 During the first few months of the Fall 2015 semester, there have been a sudden
@@ -41,7 +42,6 @@ Students often face very limited set of choices in preventing a crime other than
 It does not tell a useful information since students can't act upon it.
 
 
-limited choice, yet have to go outside
 
 ![Stacked area chart of personal offences](/images/charted1.png)
 ![Stacked area chart of property offences](/images/charted2.png)
