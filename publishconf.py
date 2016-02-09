@@ -21,5 +21,6 @@ DELETE_OUTPUT_DIRECTORY = True
 
 # Following items are often useful when publishing
 
-#DISQUS_SITENAME = ""
+DISQUS_SITENAME = "https://anythingtechnical.disqus.com"
 GOOGLE_ANALYTICS = "UA-73456201-1"
+GITHUB_URL = "https://github.com/don-han"
