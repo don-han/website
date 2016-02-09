@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Anything Technical | articles in the "articles" category</title>
+        <meta charset="utf-8" />
+    <title>Anything Technical | [intro-to] Bash Parallel Programming</title>
     <link rel="shortcut icon" type="image/png" href="http://don-han.com/favicon.png">
     <link rel="shortcut icon" type="image/x-icon" href="http://don-han.com/favicon.ico">
     <link href="http://don-han.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Anything Technical Full Atom Feed" />
@@ -11,15 +11,14 @@
     <link rel="stylesheet" href="http://don-han.com/theme/css/pygments.css" type="text/css" />
     <link rel="stylesheet" href="http://don-han.com/theme/css/print.css" type="text/css" media="print" />
     <meta name="generator" content="Pelican" />
+
+    <meta name="keywords" content="intro-to,bash,parallel programming" />
 </head>
 <body>
     <header>
         <nav>
             <ul>
-
-                <li class="ephemeral selected"><a href="http://don-han.com/category/articles.html">articles</a></li>
                 <li><a href="http://don-han.com">Home</a></li>
-                <li><a href="http://don-han.com/pages/about.html">about</a></li>
             </ul>
         </nav>
         <div class="header_box">
@@ -31,7 +30,7 @@
 
             <article class="post">
                 <h2 class="title">
-                    <a href="http://don-han.com/bash-parallel-programming.html" rel="bookmark" title="Permanent Link to &quot;[intro-to] Bash Parallel Programming&quot;">[intro-to] Bash Parallel Programming</a>
+                    <a href="http://don-han.com/drafts/bash-parallel-programming.html" rel="bookmark" title="Permanent Link to &quot;[intro-to] Bash Parallel Programming&quot;">[intro-to] Bash Parallel Programming</a>
                 </h2>
 
                 <p>Parallel programming basically means writing scripts that can process multiple
@@ -237,180 +236,7 @@ Thankfully, GNU Parallel already detailed
                     &nbsp;<a href="http://don-han.com/tag/bash.html" class="tags">bash</a>
                     &nbsp;<a href="http://don-han.com/tag/parallel-programming.html" class="tags">parallel programming</a>
                 </div>
-            </article>            <h4 class="date">May 30, 2015</h4>
-
-            <article class="post">
-                <h2 class="title">
-                    <a href="http://don-han.com/intro-to-p-vs-np.html" rel="bookmark" title="Permanent Link to &quot;[intro-to] P vs. NP&quot;">[intro-to] P vs. NP</a>
-                </h2>
-
-                <p>NOTE: The following article is intended as a gentle introduction
-for the subject, so I have intentionally left out some information that I considered
-is out of scope. However, if you are familiar with the subject and if you think
-I presented <em>factually wrong</em> statements, I will greatly appreciate an email
-with corrections. Also, if you are confused with my explanation, please feel free to
-send me an email with details of where you are confused, so I can make it a bit
-more clear. </p>
-<hr />
-<h1>What exactly are P and NP? Why do we need them?</h1>
-<p>In order to understand the P vs. NP problem, we must understand P and NP first. P
-and NP rose from the necessity of matheticians and computer scientists to
-describe how much resources, such as time, are needed to solve a decision
-problem. A decision problem is defined as any problem that given an input can
-determine or <em>decide</em> with "yes" or "no" answer. For example, given a path and a
-budget cost as inputs, the decision problem might output "yes" if the path cost
-is equal to or lower than the budget cost. Likewise, the decision problem might output "no" if the path cost is higher than the budget cost. </p>
-<p>To be more precise, P problems are a set of decision problems that can be solved in polynomial
-time <em>and</em> verified in polynomial time. For the decision problem used as an
-example above, our verification algorithm may sum up the cost of edges in linear time ( O(n) ) to
-compare it with the budget cost while the search algorithms such as DFS/BFS
-obtain the path in linear time as wel. On the other hand, NP problems are
-a set of decision problems which can be verified in polynomial time, but <em>not
-necessarily</em> solved in polynomial time. </p>
-<p>Although a common misunderstanding is to
-conceptualize NP as "<em>not</em> P", such notion is greatly misleading. Note that NP
-problems may or may not be solved in polynomial time. Therefore, NP and P are
-not mutually exclusive classes. Rather, P is a subset of NP; all P problems
-automatically qualify as NP problems since all P problems satisfy
-polynomial-time verification <em>as well as</em> polynomial-time solution, and since NP
-problems only need to fulfill polynomial-time verification, all P problems are NP problems as well.</p>
-<p>For more technical details between P and NP, refer to the extra note.</p>
-<h1>P versus NP</h1>
-<p>Now we can tackle P vs. NP problem. The question simiply asks if P equals to NP
-or not. In other words, the problem asks, if a
-problem can be verified in a polynomial time, can the problem be solved in
-a polynomial time <em>all the time</em>? That is, are some NP problems inherently
-difficult or even impossible to solve in polynomial time, or have we just
-not found the fast algorithms <em>yet</em>? So far, no official proof has been
-recognized by the Clay Mathematics Institute, which promises to reward
-one million dollars to anyone who can solve the P vs. NP problem. Although the question is simple, the implication is significant. </p>
-<h1>Implications of P = NP</h1>
-<p>If P = NP is proven, then this implies that all problems that can be
-verified in polynomial time can also be solved in polynomial time as well. The
-impact extends beyond the academic world since many industrial algorithms including
-cryptography are written under the assumption that P != NP.</p>
-<p>For example, RSA, which is a widely used cryptosystem to secure data
-transmission, exploits P != NP by designing a decryption algorithm that runs in
-polynomial time only for those who have the right access (known as a private key). If you
-do not have the private key (meaning you do not have access), you would need to solve
-the RSA problem, which is a NP problem since there is no known algorithm that
-can decrypt encryption in polynomial time.</p>
-<p>However, if P = NP is proven true, this implies that there exists some
-algorithms that can solve the RSA problem in polynomial time, meaning any
-encrypted message can be decrypted easily by even those who should not have
-access if they can find the polynomial-time decryption algorithm, which is not
-supposed to exist under the P != NP assumption. </p>
-<p>Obviously, this is a significant security threat since this "encrpyted message"
-could be a private message that you may not wish to share or even financial
-information that can be hijacked.</p>
-<p><strong>Therefore, if P = NP is true, many of the current algorithms that assume P !=
-NP become insecure or invalid, and people can maliciously exploit the algorithm
-for their personal gains.</strong></p>
-<h1>Implications of P != NP</h1>
-<p>If P != NP is true, there are some NP problems that will never be transition
-into P, meaning there never will be algorithms that can solve those NP problems
-in polynomial time.  </p>
-<p>Although the impact of this proof will not be as significant as P = NP since most of the the academia and the industry already assume P != NP, the proof will influence how
-researchers spend their time. <strong>Since there cannot be a
-polynomial-time solution for some NP problems, researchers would no longer have
-to waste their time trying to find fast algorithms for problems in NP.</strong></p>
-<hr />
-<h1>Extra Note</h1>
-<p>NP stands for "non-deterministic polynomial time" and although P does
-not have an official abbreviation, it is commonly known as "deterministic
-polynomial time". A non-deterministic polynomial problem can be
-solved in polynomial time with some lucky guesses. For example, finding a
-least-cost cycle
-that visits every node in a graph is known as a Travelling Salesman Problem,
-which is notoriously difficult. However, if our solution algorithm makes certain
-smart/lucky decisions in finding the path, the optimal path could be found in
-polynomial time.</p>
-<p>Meanwhile, the P problem can find a solution in polynomial time without depending on luck. As mentioned
-before, since P is in NP under P != NP, P problems can also find polynomial-time
-solution with some lucky guesses.</p>
-                <div class="clear"></div>
-
-                <div class="info">
-                    &nbsp;&nbsp;<a href="http://don-han.com/category/articles.html" rel="tag">articles</a>
-                    &nbsp;&middot;
-                    &nbsp;<a href="http://don-han.com/tag/intro-to.html" class="tags">intro-to</a>
-                    &nbsp;<a href="http://don-han.com/tag/theory-of-computer-science.html" class="tags">theory-of-computer-science</a>
-                </div>
-            </article>            <h4 class="date">May 18, 2015</h4>
-
-            <article class="post">
-                <h2 class="title">
-                    <a href="http://don-han.com/how-to-make-a-website-with-github-pages-and-pelican.html" rel="bookmark" title="Permanent Link to &quot;[how-to] Make a website with GitHub Pages and Pelican&quot;">[how-to] Make a website with GitHub Pages and Pelican</a>
-                </h2>
-
-                <hr />
-<p>This article is intended for audience who has some knowledge on GitHub Pages and
-Pelican, but was unable to integrate two successfully. Therefore, many steps
-below assume you are fully aware of the consequence and the context of commands
-to be executed. Since there are already many instructional guides for GitHub
-Pages and Pelican, my main focus will be on how to incorporate Pelican into
-GitHub Pages.</p>
-<hr />
-<h2>UPDATE [2015-09-22]: It seems like running <code>make github</code> on your source branch achieves 4-6 steps for you. However, you will still need to do 7 if you want to save your changes. Also, although automation is nice, I advise you to go through the steps manually for the first few weeks if you are new to Pelican to understand what actually is going on under <code>make github</code>. If there is a problem with the automation, you will have better luck if you already understand the process.</h2>
-<p>Although GitHub Pages and Pelican are very easy to use on their own, I had a
-trouble integrating them together. The main difficulty was GitHub Pages trying
-to build a website with files on root when Pelican generates the website on
-subfolder called 'output'. </p>
-<p>Some bloggers suggested creating two separate GitHub repos: one for entire files
-and another for just the output folder. However, I did not like the idea of
-having to keep track of two different repositories for one project. </p>
-<p>At one point or another, I thought of moving to Jekyll which is officially
-supported by GitHub Pages, but I like Python more, so I decided to stick to it.
-After a few hours of struggle, this is what I came to:</p>
-<ol>
-<li>
-<p>Create your GitHub repo that will store your website. It doesn't have to
-follow the <code>username.github.io</code> format (my repo is named <code>website</code>).</p>
-</li>
-<li>
-<p>Make .gitignore with</p>
-<p><code>output/</code></p>
-</li>
-<li>
-<p>Create a skeleton project with <code>pelican-quickstart</code>.</p>
-</li>
-<li>
-<p>After you finish writing contents and customizing, you can generate
-your site with <code>pelican content</code>. By default, this will create your website
-structure on 'output' folder.</p>
-</li>
-<li>
-<p>Install ghp-import (<code>pip install ghp-import</code>) and do <code>ghp-import output</code>. To quote the creator, it is "a
-script that can copy a directory to the gh-pages branch of the repository." More information about
-ghp-import <a href="https://github.com/davisp/ghp-import">here</a>. </p>
-</li>
-<li>
-<p>Then, to update your changes online, <code>git push origin gh-pages</code> </p>
-</li>
-<li>
-<p>Finally, <code>git add .</code> and <code>git commit -m "your message"</code> on project's root
-directory and push it to master with <code>git push origin master</code>. </p>
-</li>
-</ol>
-<p>At this point, your website will be hosted on
-https://<code>username</code>.github.io/<code>project_name</code>. Replace <code>username</code> and
-<code>repo_name</code> with your own GitHub username and repository name, respectively. </p>
-<p>The main idea is to store all your code in one repository but divide generating
-source code and the output folder into two different branches. The source code
-will be stored in the master branch while the output folder will be stored in
-gh-pages which is used to render the website.</p>
-<p>When you want to make further changes, you can repeat process 4~7 until you are
-satisfied.  Also, 5 and 6 could be combined by <code>ghp-import -p output</code>. </p>
-                <div class="clear"></div>
-
-                <div class="info">
-                    &nbsp;&nbsp;<a href="http://don-han.com/category/articles.html" rel="tag">articles</a>
-                    &nbsp;&middot;
-                    &nbsp;<a href="http://don-han.com/tag/how-to.html" class="tags">how-to</a>
-                    &nbsp;<a href="http://don-han.com/tag/web-dev.html" class="tags">web-dev</a>
-                </div>
             </article>
-
             <div class="clear"></div>
             <footer>
                 <p>
