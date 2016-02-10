@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Anything Technical</title><link href="http://don-han.com/" rel="alternate"></link><link href="http://don-han.com/feeds/articles.atom.xml" rel="self"></link><id>http://don-han.com/</id><updated>2015-08-09T00:00:00-07:00</updated><entry><title>[intro-to] Bash Parallel Programming</title><link href="http://don-han.com/bash-parallel-programming.html" rel="alternate"></link><updated>2015-08-09T00:00:00-07:00</updated><author><name>Don Han</name></author><id>tag:don-han.com,2015-08-09:bash-parallel-programming.html</id><summary type="html">&lt;p&gt;Parallel programming basically means writing scripts that can process multiple
-tasks at the same. This is in contrast to running scripts in a serial order which requires the
+tasks at the same time. This is in contrast to running scripts in a serial order which requires the
 previous tasks to be completed before moving onto the next.&lt;/p&gt;
 &lt;p&gt;Parallelization can be useful for boosting the performance, but it requires the tasks
 that are going to be parallelized to be independent of one another. Therefore, in
