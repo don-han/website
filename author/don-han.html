@@ -40,13 +40,11 @@ previous tasks to be completed before moving onto the next.</p>
 that are going to be parallelized to be independent of one another. Therefore, in
 this tutorial, we will refer to the function <code>do-something</code> as a task that can
 be safely run in parallel. For didactic purpose, we define <code>do-something</code> as follows:</p>
-<div class="highlight"><pre><span class="k">function</span> <span class="k">do</span>-something<span class="o">(){</span>
-    sleep <span class="nv">$1</span>
-    <span class="nb">echo</span> <span class="nv">$1</span>
-<span class="o">}</span>
-</pre></div>
-
-
+<h1>!bash</h1>
+<p>function do-something(){
+    sleep $1
+    echo $1
+}</p>
 <p>There are several ways of parallelizing a bash script, and each has its own pros
 and cons.</p>
 <p>1.</p>

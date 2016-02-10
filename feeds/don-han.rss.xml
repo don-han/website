@@ -6,13 +6,11 @@ previous tasks to be completed before moving onto the next.&lt;/p&gt;
 that are going to be parallelized to be independent of one another. Therefore, in
 this tutorial, we will refer to the function &lt;code&gt;do-something&lt;/code&gt; as a task that can
 be safely run in parallel. For didactic purpose, we define &lt;code&gt;do-something&lt;/code&gt; as follows:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;function&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;-something&lt;span class="o"&gt;(){&lt;/span&gt;
-    sleep &lt;span class="nv"&gt;$1&lt;/span&gt;
-    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$1&lt;/span&gt;
-&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
+&lt;h1&gt;!bash&lt;/h1&gt;
+&lt;p&gt;function do-something(){
+    sleep $1
+    echo $1
+}&lt;/p&gt;
 &lt;p&gt;There are several ways of parallelizing a bash script, and each has its own pros
 and cons.&lt;/p&gt;
 &lt;p&gt;1.&lt;/p&gt;
