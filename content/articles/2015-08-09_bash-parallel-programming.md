@@ -12,23 +12,21 @@ that are going to be parallelized to be independent of one another. Therefore, i
 this tutorial, we will refer to the function `do-something` as a task that can
 be safely run in parallel. For didactic purpose, we define `do-something` as follows:
 
-```bash
-function do-something(){
-    sleep $1
-    echo $1
-}
-```
+    #!bash
+    function do-something(){
+        sleep $1
+        echo $1
+    }
 
 There are several ways of parallelizing a bash script, and each has its own pros
 and cons.
 
 1\.
 
-```bash
-for i in $(seq 5 1); do
-    do-something $i &
-done
-```
+    #!bash
+    for i in $(seq 5 1); do
+        do-something $i &
+    done
 
 This is the simplest form of parallelization in bash. `&` forks each
 `do-something` task to the background every time it's called.
@@ -56,18 +54,17 @@ DISADVANTAGE: can potentially overload the system
 
 2\.
 
-```bash
-wait_turn=4
-j=1
-for i in $(seq 10 1); do
-    do-something $i &
-    if ((j++ % wait_turn == 0)); then
-        wait
-    fi
-done
-wait
-echo "after loop"
-```
+    #!bash
+    wait_turn=4
+    j=1
+    for i in $(seq 10 1); do
+        do-something $i &
+        if ((j++ % wait_turn == 0)); then
+            wait
+        fi
+    done
+    wait
+    echo "after loop"
 
 Running this, our result should look something like this:
 
@@ -95,17 +92,16 @@ The value of `wait_turn` has been chosen arbitrarily, so you can fiddle with it 
 A keen observer might have noted the another `wait` function after the function.
 To illustrate its need, consider a similar script without the after-loop `wait`:
 
-```bash
-wait_turn=4
-j=1
-for i in $(seq 10 1); do
-    do-something $i &
-    if ((j++ % wait_turn == 0)); then
-        wait
-    fi
-done
-echo "after loop"
-```
+    #!bash
+    wait_turn=4
+    j=1
+    for i in $(seq 10 1); do
+        do-something $i &
+        if ((j++ % wait_turn == 0)); then
+            wait
+        fi
+    done
+    echo "after loop"
 
 Before scrolling down, think what this would output.
 
@@ -155,9 +151,8 @@ this article, but I will cover the basics.
 
 For example,
 
-```bash
-seq 10 1 | xargs -n1 -P4 -I {} bash -c "sleep {}; echo {};"
-```
+    #!bash
+    seq 10 1 | xargs -n1 -P4 -I {} bash -c "sleep {}; echo {};"
 
 To break it down, I give the input ranging from 10 to 1. Then, `xargs` separates
 the input into indiviual pieces (as specified by -n1, meaning take at most one
@@ -188,9 +183,8 @@ As we have seen with #2, since we have limited to the four processes, only upto 
 
 Indeed, if we give as many processes as there are inputs, all processes will be handled at the same time as we would expect.
 
-```bash
-seq 10 1 | xargs -n1 -P10 -I {} bash -c "sleep {}; echo {};"
-```
+    #!bash
+    seq 10 1 | xargs -n1 -P10 -I {} bash -c "sleep {}; echo {};"
 
 which rightly produces
 
@@ -221,15 +215,14 @@ Thankfully, GNU Parallel already detailed
 [reasons why you might want to switch over](https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel). 
 
 The `parallel` equivalent of 
-```bash
-seq 10 1 | xargs -P4 -I {} bash -c "sleep {}; echo {};"
-```
+
+    #!bash
+    seq 10 1 | xargs -P4 -I {} bash -c "sleep {}; echo {};"
 
 is
 
-```bash
-seq 10 1 | parallel -P4 "sleep {}; echo {};"
-```
+    #!bash
+    seq 10 1 | parallel -P4 "sleep {}; echo {};"
 
 You can see that `parallel`syntax is a lot simpler than `xargs`.
 

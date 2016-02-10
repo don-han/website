@@ -1,5 +1,5 @@
 Title: projects
-Status: draft
+Status: hidden
 
 ---
 # [This Website](https://github.com/don-han/website)
