@@ -4,7 +4,7 @@ Date: 2015-08-09
 Tags: intro-to, bash, parallel programming
 
 Parallel programming basically means writing scripts that can process multiple
-tasks at the same. This is in contrast to running scripts in a serial order which requires the
+tasks at the same time. This is in contrast to running scripts in a serial order which requires the
 previous tasks to be completed before moving onto the next.
 
 Parallelization can be useful for boosting the performance, but it requires the tasks
