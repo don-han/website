@@ -52,11 +52,13 @@ be safely run in parallel. For didactic purpose, we define <code>do-something</c
 <p>There are several ways of parallelizing a bash script, and each has its own pros
 and cons.</p>
 <p>1.</p>
-<div class="highlight"><pre><span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">5</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">5</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
     <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
 <span class="k">done</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>This is the simplest form of parallelization in bash. <code>&amp;</code> forks each
 <code>do-something</code> task to the background every time it's called.</p>
@@ -76,7 +78,16 @@ seconds while our parallel should theoretically run in 5 seconds. That's 3 times
 <p>ADVATAGE: simple</p>
 <p>DISADVANTAGE: can potentially overload the system</p>
 <p>2.</p>
-<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
 <span class="nv">j</span><span class="o">=</span>1
 <span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
     <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
@@ -87,7 +98,7 @@ seconds while our parallel should theoretically run in 5 seconds. That's 3 times
 <span class="nb">wait</span>
 <span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>Running this, our result should look something like this:</p>
 <div class="highlight"><pre>7
@@ -110,7 +121,15 @@ are finished. In this case, a batch of four tasks are forked into the background
 <p>The value of <code>wait_turn</code> has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. Usually, the value is a multiple of the number of the cores you have.</p>
 <p>A keen observer might have noted the another <code>wait</code> function after the function.
 To illustrate its need, consider a similar script without the after-loop <code>wait</code>:</p>
-<div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">wait_turn</span><span class="o">=</span>4
 <span class="nv">j</span><span class="o">=</span>1
 <span class="k">for</span> i in <span class="k">$(</span>seq <span class="m">10</span> 1<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
     <span class="k">do</span>-something <span class="nv">$i</span> <span class="p">&amp;</span>
@@ -120,7 +139,7 @@ To illustrate its need, consider a similar script without the after-loop <code>w
 <span class="k">done</span>
 <span class="nb">echo</span> <span class="s2">&quot;after loop&quot;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>Before scrolling down, think what this would output.</p>
 <div class="highlight"><pre>7
@@ -162,9 +181,9 @@ it comes with a handy <code>-P</code> flag which defines the maximum number of p
 a time. <code>xargs</code> is extremely flexible, so I will not go into too much details in
 this article, but I will cover the basics.</p>
 <p>For example,</p>
-<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P4 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P4 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>To break it down, I give the input ranging from 10 to 1. Then, <code>xargs</code> separates
 the input into indiviual pieces (as specified by -n1, meaning take at most one
@@ -190,9 +209,9 @@ input chunks.</p>
 
 <p>As we have seen with #2, since we have limited to the four processes, only upto 4 tasks are processed at a time. However, if you take a look at the second batch, you will see that the numbers are not ordered as before. This is because <code>xargs</code> assigns tasks as soon as processes becomes available.</p>
 <p>Indeed, if we give as many processes as there are inputs, all processes will be handled at the same time as we would expect.</p>
-<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P10 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -n1 -P10 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>which rightly produces</p>
 <div class="highlight"><pre>1
@@ -217,14 +236,14 @@ I introduce you <a href="http://www.gnu.org/software/parallel/">GNU Parallel</a>
 Thankfully, GNU Parallel already detailed
 <a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel">reasons why you might want to switch over</a>. </p>
 <p>The <code>parallel</code> equivalent of </p>
-<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -P4 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> xargs -P4 -I <span class="o">{}</span> bash -c <span class="s2">&quot;sleep {}; echo {};&quot;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>is</p>
-<div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> parallel -P4 <span class="s2">&quot;sleep {}; echo {};&quot;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>seq <span class="m">10</span> <span class="m">1</span> <span class="p">|</span> parallel -P4 <span class="s2">&quot;sleep {}; echo {};&quot;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>You can see that <code>parallel</code>syntax is a lot simpler than <code>xargs</code>.</p>
 <p>ADVANTAGE: refer to <a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel">the comparison between xargs and GNU Parallel</a>; to name a few, flexibility and simplicity</p>
