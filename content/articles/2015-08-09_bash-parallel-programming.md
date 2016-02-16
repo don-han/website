@@ -41,12 +41,12 @@ If you run this parallel script, your output should look something like this:
 5
 ```
 
-Even though our script runs from 5 to 1, `do-something` task with the shortest sleeping time gets finished first.
+Even though our script runs from 5 to 1, because all five tasks start at the same time due to parallelization, `do-something` task with the shortest sleeping time gets finished first.
 
 Also, note the speed improvement. Our serial script runs in `5+4+3+2+1=15`
 seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching `&`!
 
-However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your `do-something` does something far more intensive. Then, your `&` can easily overload the server. Our next method serves to prevent that.
+However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to process 5 billion different tasks, and your `do-something` does something far more intensive. Then, when you run your script, it will attempt to process all those tasks at once, which will easily overload the machine. Our next method will help us prevent that.
 
 ADVATAGE: simple
 
