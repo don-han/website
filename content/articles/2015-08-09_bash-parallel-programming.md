@@ -121,7 +121,7 @@ after loop
 
 Notice how our "after loop" string comes before `do-something 1` and `do-something 2` is
 processed. This could be critical if you have an after-loop code that needs the
-for-loop to completely finish. Likewise, apply `wait` fucntion after the for-loop for the first method if necessary.
+for-loop to completely finish. Likewise, apply `wait` function after the for-loop for the first method if necessary.
 
 Yet, even this method can be restrictive. Consider a case where the total time
 of task completion varies greatly. For our example above, say every fifth tasks
