@@ -38,10 +38,10 @@ and cons.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Even though our script runs from 5 to 1, &lt;code&gt;do-something&lt;/code&gt; task with the shortest sleeping time gets finished first.&lt;/p&gt;
+&lt;p&gt;Even though our script runs from 5 to 1, because all five tasks start at the same time due to parallelization, &lt;code&gt;do-something&lt;/code&gt; task with the shortest sleeping time gets finished first.&lt;/p&gt;
 &lt;p&gt;Also, note the speed improvement. Our serial script runs in &lt;code&gt;5+4+3+2+1=15&lt;/code&gt;
 seconds while our parallel should theoretically run in 5 seconds. That's 3 times performance improvement by just attaching &lt;code&gt;&amp;amp;&lt;/code&gt;!&lt;/p&gt;
-&lt;p&gt;However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to loop through 5000 iterations, and your &lt;code&gt;do-something&lt;/code&gt; does something far more intensive. Then, your &lt;code&gt;&amp;amp;&lt;/code&gt; can easily overload the server. Our next method serves to prevent that.&lt;/p&gt;
+&lt;p&gt;However, there is one critical problem. Imagine, instead of looping through 5 iterations, your script has to process 5 billion different tasks, and your &lt;code&gt;do-something&lt;/code&gt; does something far more intensive. Then, when you run your script, it will attempt to process all those tasks at once, which will easily overload the machine. Our next method will help us prevent that.&lt;/p&gt;
 &lt;p&gt;ADVATAGE: simple&lt;/p&gt;
 &lt;p&gt;DISADVANTAGE: can potentially overload the system&lt;/p&gt;
 &lt;p&gt;2.&lt;/p&gt;
@@ -85,6 +85,7 @@ after loop
 &lt;p&gt;Can you see the pattern?&lt;/p&gt;
 &lt;p&gt;Once our &lt;code&gt;wait&lt;/code&gt; function is called, the shell "waits" until all background tasks
 are finished. In this case, a batch of four tasks are forked into the background at a time as specified by &lt;code&gt;wait_turn&lt;/code&gt;, and the script waits until all four processes are complete. &lt;/p&gt;
+&lt;p&gt;By doing this, we limit the number of tasks that will be processed. While this will also limit the time it takes to process the all tasks, it won't take down your machine.&lt;/p&gt;
 &lt;p&gt;The value of &lt;code&gt;wait_turn&lt;/code&gt; has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. Usually, the value is a multiple of the number of the cores you have.&lt;/p&gt;
 &lt;p&gt;A keen observer might have noted the another &lt;code&gt;wait&lt;/code&gt; function after the function.
 To illustrate its need, consider a similar script without the after-loop &lt;code&gt;wait&lt;/code&gt;:&lt;/p&gt;
@@ -125,29 +126,27 @@ after loop
 
 &lt;p&gt;Notice how our "after loop" string comes before &lt;code&gt;do-something 1&lt;/code&gt; and &lt;code&gt;do-something 2&lt;/code&gt; is
 processed. This could be critical if you have an after-loop code that needs the
-for-loop to completely finish. Likewise, apply &lt;code&gt;wait&lt;/code&gt; fucntion after the for-loop for the first method if necessary.&lt;/p&gt;
+for-loop to completely finish. Likewise, apply &lt;code&gt;wait&lt;/code&gt; function after the for-loop for the first method if necessary.&lt;/p&gt;
 &lt;p&gt;Yet, even this method can be restrictive. Consider a case where the total time
 of task completion varies greatly. For our example above, say every fifth tasks
-(&lt;code&gt;do-something 5&lt;/code&gt;, &lt;code&gt;do-something 10&lt;/code&gt;), for some odd reason, takes tremendous
-amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
+(&lt;code&gt;do-something 5&lt;/code&gt;, &lt;code&gt;do-something 10&lt;/code&gt;), for some odd reason, takes 5 and 10 miniutes to complete instead of mere 5 or 10 seconds, respectively. If we
 run our script again under this new condition, we can see that our script runs
 very inefficiently because for our first batch, even though tasks 7, 8, 9 are
 already completed, they would have to wait for one task, &lt;code&gt;do-something 10&lt;/code&gt; to
 finish! Likewise, for our second batch, the threads that were working on tasks
 3, 4, and 6 are idling because they cannot move forward until &lt;code&gt;do-something 5&lt;/code&gt;
 completes. In other words, if the batch contains an unusually slow task, it becomes
-the bottle neck and slows down the entire process, almost defeating the purpose
+the bottleneck and slows down the entire process, almost defeating the purpose
 of parallelism.&lt;/p&gt;
 &lt;p&gt;ADVANTAGE: parallelization without overloading the system&lt;/p&gt;
 &lt;p&gt;DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process&lt;/p&gt;
 &lt;p&gt;3.&lt;/p&gt;
 &lt;p&gt;Fortunately, UNIX/LINUX comes with a command called
 &lt;a href="https://en.wikipedia.org/wiki/Xargs"&gt;&lt;code&gt;xargs&lt;/code&gt;&lt;/a&gt; which whips idling tasks back to
-work. . &lt;code&gt;xargs&lt;/code&gt; is not specifically designed to be used for parallelization, but
-it comes with a handy &lt;code&gt;-P&lt;/code&gt; flag which defines the maximum number of processes that can run at
+work. &lt;code&gt;xargs&lt;/code&gt; is not specifically designed to be used for parallelization, but
+it comes with a handy &lt;code&gt;-P&lt;/code&gt; flag which defines the maximum number of parallel processes that can run at
 a time. &lt;code&gt;xargs&lt;/code&gt; is extremely flexible, so I will not go into too much details in
-this article, but I will cover the basics.&lt;/p&gt;
-&lt;p&gt;For example,&lt;/p&gt;
+this article, but I will cover the basics:&lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs -n1 -P4 -I &lt;span class="o"&gt;{}&lt;/span&gt; bash -c &lt;span class="s2"&gt;&amp;quot;sleep {}; echo {};&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
@@ -174,7 +173,7 @@ input chunks.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;As we have seen with #2, since we have limited to the four processes, only upto 4 tasks are processed at a time. However, if you take a look at the second batch, you will see that the numbers are not ordered as before. This is because &lt;code&gt;xargs&lt;/code&gt; assigns tasks as soon as processes becomes available.&lt;/p&gt;
+&lt;p&gt;If you take a look at the first batch, as we have seen with #2, only upto 4 tasks are processed at a time since we have limited to the four processes. However, if you take a look at the second batch, you will see that the numbers are not ordered as before. This is because &lt;code&gt;xargs&lt;/code&gt; assigns tasks as soon as processes becomes available.&lt;/p&gt;
 &lt;p&gt;Indeed, if we give as many processes as there are inputs, all processes will be handled at the same time as we would expect.&lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs -n1 -P10 -I &lt;span class="o"&gt;{}&lt;/span&gt; bash -c &lt;span class="s2"&gt;&amp;quot;sleep {}; echo {};&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -201,7 +200,7 @@ input chunks.&lt;/p&gt;
 &lt;p&gt;However, for some users, they might need something more powerful, in which case,
 I introduce you &lt;a href="http://www.gnu.org/software/parallel/"&gt;GNU Parallel&lt;/a&gt;.
 Thankfully, GNU Parallel already detailed
-&lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;reasons why you might want to switch over&lt;/a&gt;. &lt;/p&gt;
+&lt;a href="https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel"&gt;reasons why you might want to switch over from &lt;code&gt;xargs&lt;/code&gt;&lt;/a&gt;. &lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;parallel&lt;/code&gt; equivalent of &lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;seq &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs -P4 -I &lt;span class="o"&gt;{}&lt;/span&gt; bash -c &lt;span class="s2"&gt;&amp;quot;sleep {}; echo {};&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
