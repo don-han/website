@@ -87,6 +87,8 @@ Can you see the pattern?
 Once our `wait` function is called, the shell "waits" until all background tasks
 are finished. In this case, a batch of four tasks are forked into the background at a time as specified by `wait_turn`, and the script waits until all four processes are complete. 
 
+By doing this, we limit the number of tasks that will be processed. While this will also limit the time it takes to process the all tasks, it won't take down your machine.
+
 The value of `wait_turn` has been chosen arbitrarily, so you can fiddle with it to find the right number for your own script. Usually, the value is a multiple of the number of the cores you have.
 
 A keen observer might have noted the another `wait` function after the function.
@@ -125,15 +127,14 @@ for-loop to completely finish. Likewise, apply `wait` function after the for-loo
 
 Yet, even this method can be restrictive. Consider a case where the total time
 of task completion varies greatly. For our example above, say every fifth tasks
-(`do-something 5`, `do-something 10`), for some odd reason, takes tremendous
-amount of time to complete instead of mere 5 or 10 seconds, respectively. If we
+(`do-something 5`, `do-something 10`), for some odd reason, takes 5 and 10 miniutes to complete instead of mere 5 or 10 seconds, respectively. If we
 run our script again under this new condition, we can see that our script runs
 very inefficiently because for our first batch, even though tasks 7, 8, 9 are
 already completed, they would have to wait for one task, `do-something 10` to
 finish! Likewise, for our second batch, the threads that were working on tasks
 3, 4, and 6 are idling because they cannot move forward until `do-something 5`
 completes. In other words, if the batch contains an unusually slow task, it becomes
-the bottle neck and slows down the entire process, almost defeating the purpose
+the bottleneck and slows down the entire process, almost defeating the purpose
 of parallelism.
 
 ADVANTAGE: parallelization without overloading the system
@@ -144,12 +145,10 @@ DISADVANTAGE: bottlenecks occur and can potentially slow down the entire process
 
 Fortunately, UNIX/LINUX comes with a command called
 [`xargs`](https://en.wikipedia.org/wiki/Xargs) which whips idling tasks back to
-work. . `xargs` is not specifically designed to be used for parallelization, but
-it comes with a handy `-P` flag which defines the maximum number of processes that can run at
+work. `xargs` is not specifically designed to be used for parallelization, but
+it comes with a handy `-P` flag which defines the maximum number of parallel processes that can run at
 a time. `xargs` is extremely flexible, so I will not go into too much details in
-this article, but I will cover the basics.
-
-For example,
+this article, but I will cover the basics:
 
     #!bash
     seq 10 1 | xargs -n1 -P4 -I {} bash -c "sleep {}; echo {};"
@@ -179,7 +178,7 @@ The above snippet produces:
 2
 ```
 
-As we have seen with #2, since we have limited to the four processes, only upto 4 tasks are processed at a time. However, if you take a look at the second batch, you will see that the numbers are not ordered as before. This is because `xargs` assigns tasks as soon as processes becomes available.
+If you take a look at the first batch, as we have seen with #2, only upto 4 tasks are processed at a time since we have limited to the four processes. However, if you take a look at the second batch, you will see that the numbers are not ordered as before. This is because `xargs` assigns tasks as soon as processes becomes available.
 
 Indeed, if we give as many processes as there are inputs, all processes will be handled at the same time as we would expect.
 
@@ -212,7 +211,7 @@ DISADVANTAGE: none for most users. See #4 for more
 However, for some users, they might need something more powerful, in which case,
 I introduce you [GNU Parallel](http://www.gnu.org/software/parallel/).
 Thankfully, GNU Parallel already detailed
-[reasons why you might want to switch over](https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel). 
+[reasons why you might want to switch over from `xargs`](https://www.gnu.org/software/parallel/man.html#DIFFERENCES-BETWEEN-xargs-AND-GNU-Parallel). 
 
 The `parallel` equivalent of 
 
